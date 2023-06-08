@@ -8,6 +8,10 @@ export const siteConfig = {
       title: "Home",
       href: "/",
     },
+    {
+      title: "Kanji",
+      href: "/kanji",
+    },
   ],
   links: {
     twitter: "https://twitter.com/",

@@ -50,9 +50,9 @@ model Vocabulary {
   reading         String
   meaning         String
   sentence        String
-  englishSentence String
-  sound           String
-  sentenceSound   String
+  englishSentence String  @map("en-sentence")
+  sound           String?
+  sentenceSound   String?
   hint            String?
 
   User   User?   @relation(fields: [userId], references: [id])

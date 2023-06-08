@@ -14,7 +14,7 @@ const MainKanji: React.FC<MainKanjiProps> = ({
   enSentence,
 }) => {
   return (
-    <div className="container p-2">
+    <div className="container h-screen p-2">
       <div className="p-1 flex flex-col md:flex-row">
         <div className="text-[100px] whitespace-nowrap w-auto text-center justify-center hover:font-hira">
           {word}
@@ -46,6 +46,7 @@ const MainKanji: React.FC<MainKanjiProps> = ({
           </div>
         </div>
       </div>
+      <div className="container pt-3">PICTURE OF STROKES</div>
     </div>
   )
 }
