@@ -1,9 +1,14 @@
+import { KanjiDetails } from "@/types/types"
+
+import StrokeGraph from "./stroke-graph"
+
 interface MainKanjiProps {
   word: string
   reading: string
   meaning: string
   sentence: string
   enSentence: string
+  kanjiDetails: KanjiDetails
 }
 
 const MainKanji: React.FC<MainKanjiProps> = ({
@@ -11,8 +16,11 @@ const MainKanji: React.FC<MainKanjiProps> = ({
   reading,
   meaning,
   sentence,
+  kanjiDetails,
   enSentence,
 }) => {
+  console.log(kanjiDetails)
+
   return (
     <div className="container h-screen p-2">
       <div className="p-1 flex flex-col md:flex-row">
@@ -46,7 +54,9 @@ const MainKanji: React.FC<MainKanjiProps> = ({
           </div>
         </div>
       </div>
-      <div className="container pt-3">PICTURE OF STROKES</div>
+      <div className="container pt-3 w-full border rounded-md border-red-50">
+        <StrokeGraph kanjiDetails={kanjiDetails} />
+      </div>
     </div>
   )
 }

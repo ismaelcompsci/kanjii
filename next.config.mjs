@@ -4,6 +4,9 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  images: {
+    domains: ["https://media.kanjialive.com/"],
+  },
 }
 
 export default nextConfig

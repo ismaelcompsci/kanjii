@@ -1,10 +1,11 @@
 "use client"
 
 import getKanji from "@/actions/getKanji"
-import { Vocabulary } from "@prisma/client"
 import { useInfiniteQuery } from "@tanstack/react-query"
 
-import MainKanji from "@/components/kanji/main-kanji"
+import { ExtendedVocabulary } from "@/types/types"
+import MainKanji from "@/components/main-kanji"
+import MainKanjiSkeleton from "@/components/skeletons/main-kanji-skeleton"
 
 const Kanji = () => {
   // useInfiniteQuery is a hook that accepts a queryFn and queryKey and returns the result of the queryFn
@@ -18,7 +19,7 @@ const Kanji = () => {
     isFetchingNextPage,
   } = useInfiniteQuery({
     queryFn: ({ pageParam = "" }) =>
-      getKanji({ take: 10, lastCursor: pageParam }),
+      getKanji({ take: 5, lastCursor: pageParam }),
     queryKey: ["users"],
     getNextPageParam: (lastPage) => {
       return lastPage?.metadata.lastCursor
@@ -29,11 +30,11 @@ const Kanji = () => {
     <div className="mt-10">
       {isSuccess &&
         data?.pages.map((page) =>
-          page.data.map((data: Vocabulary, index: number) => {
-            // if the last element in the page is in view, add a ref to it
-
+          page.data.map((data: ExtendedVocabulary, index: number) => {
             return (
               <MainKanji
+                key={data.id}
+                kanjiDetails={data.kanjiDetails}
                 word={data.word}
                 reading={data.word}
                 meaning={data.meaning}
@@ -43,7 +44,7 @@ const Kanji = () => {
             )
           })
         )}
-      {(isLoading || isFetchingNextPage) && <p className="mb-4">Loading...</p>}
+      {(isLoading || isFetchingNextPage) && <MainKanjiSkeleton />}
     </div>
   )
 }

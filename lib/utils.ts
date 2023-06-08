@@ -1,11 +1,28 @@
-import { clsx, type ClassValue } from "clsx"
+import axios from "axios"
+import { ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
+
+import { KanjiDetails } from "@/types/types"
+
+// Regular expression unicode blocks collected from
+// http://www.localizingjapan.com/blog/2012/01/20/regular-expressions-for-japanese-text/
+
+export const _hiragana_full = "[ぁ-ゟ]"
+export const _katakana_full = "[゠-ヿ]"
+export const _kanji = "[㐀-䶵一-鿋豈-頻]"
+export const _radicals = "[⺀-⿕]"
+export const _katakana_half_width = "[｟-ﾟ]"
+export const _alphanum_full = "[！-～]"
+export const _symbols_punct = "[、-〿]"
+export const _misc_symbols = "[ㇰ-ㇿ㈠-㉃㊀-㋾㌀-㍿]"
+export const _ascii_char = "[ -~]"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const findAll = function (pattern: RegExp, string: string) {
+// TODO : EXPORT FUNCTION USED BY SERVER IN A DIFFERENT FILE
+export const findAll = function (pattern: RegExp | string, string: string) {
   var regex = new RegExp(pattern, "g")
   var matches = []
   var match
@@ -15,4 +32,25 @@ export const findAll = function (pattern: RegExp, string: string) {
   }
 
   return matches
+}
+
+export async function getKanjiDetails(kanji: string) {
+  const response = await axios.get(
+    `https://kanjialive-api.p.rapidapi.com/api/public/kanji/${kanji}`,
+    {
+      headers: {
+        "X-RapidAPI-Key": process.env.X_RAPID_API_KEY,
+        "X-RapidAPI-Host": "kanjialive-api.p.rapidapi.com",
+      },
+    }
+  )
+
+  const kanjiData: KanjiDetails = {
+    character: kanji,
+    examples: response.data.examples,
+    strokes: response.data.kanji.strokes,
+    video: response.data.kanji.video,
+  }
+
+  return kanjiData
 }
