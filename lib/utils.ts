@@ -54,3 +54,24 @@ export async function getKanjiDetails(kanji: string) {
 
   return kanjiData
 }
+
+export function kanjiToHex(kanji: string) {
+  var kcode = kanji.codePointAt(0)
+  var hex = kcode!.toString(16)
+  var zeros = 5 - hex.length
+  hex = "0".repeat(zeros) + hex
+  return hex
+}
+
+export function fileToKanjiVG(file: string) {
+  return "/kanji/" + file
+}
+
+export function kanjiURL(kanji: string) {
+  var hex = kanjiToHex(kanji)
+  return fileToKanjiVG(hex + ".svg")
+}
+
+export function setLineAttributes(line: any, attributes: any) {
+  line.attr(attributes)
+}

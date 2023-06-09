@@ -19,8 +19,6 @@ const MainKanji: React.FC<MainKanjiProps> = ({
   kanjiDetails,
   enSentence,
 }) => {
-  console.log(kanjiDetails)
-
   return (
     <div className="container h-screen p-2">
       <div className="p-1 flex flex-col md:flex-row">
@@ -54,11 +52,16 @@ const MainKanji: React.FC<MainKanjiProps> = ({
           </div>
         </div>
       </div>
-      <div className="container pt-3 w-full border rounded-md border-red-50">
-        <StrokeGraph kanjiDetails={kanjiDetails} />
+      <div className="w-auto">
+        <div className="w-full relative float-left pl-[0.9375rem] pr-[0.9375rem]">
+          <h2>Stroke Order</h2>
+          <StrokeGraph kanjiDetails={kanjiDetails} />
+        </div>
       </div>
     </div>
   )
 }
 
 export default MainKanji
+
+// container m-0 p-0 border rounded-md border-red-50 flex items-center justify-items-start float-left

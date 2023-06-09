@@ -42,3 +42,7 @@ export interface QueryOptions {
     id: "asc" | "desc"
   }
 }
+
+export interface StrokeGraphProps {
+  kanjiDetails: KanjiDetails
+}

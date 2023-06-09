@@ -5,7 +5,7 @@ const nextConfig = {
     appDir: true,
   },
   images: {
-    domains: ["https://media.kanjialive.com/"],
+    domains: ["https://media.kanjialive.com/", "https://media.kanjialive.com"],
   },
 }
 
