@@ -55,6 +55,7 @@ const MainKanji: React.FC<MainKanjiProps> = ({
       <div className="w-auto">
         <div className="w-full relative float-left pl-[0.9375rem] pr-[0.9375rem]">
           <h2>Stroke Order</h2>
+
           <StrokeGraph kanjiDetails={kanjiDetails} />
         </div>
       </div>

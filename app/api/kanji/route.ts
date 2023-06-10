@@ -54,6 +54,7 @@ export async function GET(req: Request) {
       if (kanjisInWord.length > 0) {
         for (const kanjiInWord of kanjisInWord) {
           const extendedKanji = await getKanjiDetails(kanjiInWord)
+
           finalDataKanji.push({ ...kanjiData, kanjiDetails: extendedKanji })
         }
       }
