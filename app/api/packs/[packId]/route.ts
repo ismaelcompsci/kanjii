@@ -2,16 +2,25 @@ import { NextResponse } from "next/server"
 
 import { QueryOptions } from "@/types/types"
 import prisma from "@/lib/prismadb"
-import { _kanji, findAll, getKanjiDetails } from "@/lib/utils"
+import { _kanji } from "@/lib/utils"
 
-export async function GET(req: Request) {
+interface IParams {
+  packId: string
+}
+
+export async function GET(req: Request, { params }: { params: IParams }) {
   try {
     const url = new URL(req.url)
     const take = url.searchParams.get("take")
     const lastCursor = url.searchParams.get("lastCursor")
+    const first = url.searchParams.get("first")
 
     const queryOptions: QueryOptions = {
+      where: {
+        vocabularyPackId: params.packId,
+      },
       take: take ? parseInt(take as string) : 5,
+      skip: 0,
       orderBy: {
         id: "asc",
       },
@@ -46,21 +55,8 @@ export async function GET(req: Request) {
       cursor: { id: cursor },
     })
 
-    const finalDataKanji = []
-
-    for (const kanjiData of kanji) {
-      const kanjisInWord = findAll(_kanji, kanjiData.word)
-
-      if (kanjisInWord.length > 0) {
-        for (const kanjiInWord of kanjisInWord) {
-          const extendedKanji = await getKanjiDetails(kanjiInWord)
-
-          finalDataKanji.push({ ...kanjiData, kanjiDetails: extendedKanji })
-        }
-      }
-    }
     const data = {
-      data: finalDataKanji,
+      data: kanji,
       metadata: {
         lastCursor: cursor,
         hasNextPage: nextPage.length > 0,

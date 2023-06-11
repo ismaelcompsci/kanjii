@@ -8,8 +8,9 @@
   src: url("../assets/fonts/HiraMinPro-W3.otf");
 }
 
+
 .stroke-box {
-  stroke: #444;
+  stroke: hsl(var(--border));
   fill: none;
   stroke-width: 2;
   stroke-linecap: square;
@@ -17,14 +18,14 @@
 
 
 .stroke-box-guide {
-  stroke: #444;
+  stroke: hsl(var(--border));
   stroke-width: 2;
   stroke-linecap: square;
   stroke-dasharray: 5, 5;
 }
 
 .stroke-existing-path {
-  stroke: #999;
+  stroke: hsl(var(--muted-foreground));
   fill: none;
   stroke-width: 3;
   stroke-linecap: round;
@@ -32,8 +33,16 @@
 }
 
 
+.stroke-current-path.dark {
+  stroke: hsl(var(--foreground));
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .stroke-current-path {
-  stroke: #eee;
+  stroke: hsl(var(--foreground));
   fill: none;
   stroke-width: 3;
   stroke-linecap: round;

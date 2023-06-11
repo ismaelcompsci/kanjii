@@ -9,8 +9,8 @@ export const siteConfig = {
       href: "/",
     },
     {
-      title: "Kanji",
-      href: "/kanji",
+      title: "Packs",
+      href: "/packs",
     },
   ],
   links: {

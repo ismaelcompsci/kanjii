@@ -1,5 +1,3 @@
-import { KanjiDetails } from "@/types/types"
-
 import StrokeGraph from "./stroke-graph"
 
 interface MainKanjiProps {
@@ -8,15 +6,15 @@ interface MainKanjiProps {
   meaning: string
   sentence: string
   enSentence: string
-  kanjiDetails: KanjiDetails
 }
+
+// TODO : add radix tool bar as carousel?
 
 const MainKanji: React.FC<MainKanjiProps> = ({
   word,
   reading,
   meaning,
   sentence,
-  kanjiDetails,
   enSentence,
 }) => {
   return (
@@ -55,8 +53,12 @@ const MainKanji: React.FC<MainKanjiProps> = ({
       <div className="w-auto">
         <div className="w-full relative float-left pl-[0.9375rem] pr-[0.9375rem]">
           <h2>Stroke Order</h2>
-
-          <StrokeGraph kanjiDetails={kanjiDetails} />
+          {word.split("").map((k, index) => (
+            <div key={index}>
+              <h3>{k}</h3>
+              <StrokeGraph kanji={k} />
+            </div>
+          ))}
         </div>
       </div>
     </div>

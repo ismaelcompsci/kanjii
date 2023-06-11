@@ -34,27 +34,6 @@ export const findAll = function (pattern: RegExp | string, string: string) {
   return matches
 }
 
-export async function getKanjiDetails(kanji: string) {
-  const response = await axios.get(
-    `https://kanjialive-api.p.rapidapi.com/api/public/kanji/${kanji}`,
-    {
-      headers: {
-        "X-RapidAPI-Key": process.env.X_RAPID_API_KEY,
-        "X-RapidAPI-Host": "kanjialive-api.p.rapidapi.com",
-      },
-    }
-  )
-
-  const kanjiData: KanjiDetails = {
-    character: kanji,
-    examples: response.data.examples,
-    strokes: response.data.kanji.strokes,
-    video: response.data.kanji.video,
-  }
-
-  return kanjiData
-}
-
 export function kanjiToHex(kanji: string) {
   var kcode = kanji.codePointAt(0)
   var hex = kcode!.toString(16)

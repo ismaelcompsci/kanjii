@@ -1,4 +1,5 @@
-import { MutableRefObject } from "react"
+import { MutableRefObject, useEffect } from "react"
+import { useTheme } from "next-themes"
 import Snap, { Element, Fragment, Paper, load } from "snapsvg-cjs-ssr-safe"
 
 function createStrokeOrderDiagram(
@@ -6,105 +7,110 @@ function createStrokeOrderDiagram(
   svgRef: MutableRefObject<SVGSVGElement | null>,
   svgHolder: MutableRefObject<HTMLDivElement | null>
 ): void {
-  const makeStrokeOrderDiagram = (f: Fragment): void => {
-    if (svgRef.current && svgHolder.current) {
-      const s: Paper = Snap(svgRef.current)
-      var diagramSize = 200
-      var coordRe = "(?:\\d+(?:\\.\\d+)?)"
-      const strokeRe = new RegExp(
-        `^[LMT]\\s*(${coordRe})[,\\s](${coordRe})`,
-        "i"
-      )
-      var allPaths = f.selectAll("path")
-      var drawnPaths: Element[] = []
-      var canvasWidth = (allPaths.length * diagramSize) / 2
-      var canvasHeight = diagramSize / 2
-      var frameSize = diagramSize / 2
-      var frameOffsetMatrix = new (Snap as any).matrix()
-      frameOffsetMatrix.translate(-frameSize / 16 + 2, -frameSize / 16 + 2)
-      // Set drawing area
+  const { theme } = useTheme()
+  useEffect(() => {
+    const darkMode = theme === "dark" ? "dark" : ""
 
-      s.node.style.width = `${canvasWidth}px`
-      s.node.style.height = `${canvasHeight}px`
-      s.node.setAttribute("viewBox", `0 0 ${canvasWidth} ${canvasHeight}`)
+    const makeStrokeOrderDiagram = (f: Fragment): void => {
+      if (svgRef.current && svgHolder.current) {
+        const s: Paper = Snap(svgRef.current)
+        var diagramSize = 200
+        var coordRe = "(?:\\d+(?:\\.\\d+)?)"
+        const strokeRe = new RegExp(
+          `^[LMT]\\s*(${coordRe})[,\\s](${coordRe})`,
+          "i"
+        )
+        var allPaths = f.selectAll("path")
+        var drawnPaths: Element[] = []
+        var canvasWidth = (allPaths.length * diagramSize) / 2
+        var canvasHeight = diagramSize / 2
+        var frameSize = diagramSize / 2
+        var frameOffsetMatrix = new (Snap as any).matrix()
+        frameOffsetMatrix.translate(-frameSize / 16 + 2, -frameSize / 16 + 2)
+        // Set drawing area
 
-      var boundingBoxTop = s.line(1, 1, canvasWidth - 1, 1)
-      var boundingBoxLeft = s.line(1, 1, 1, canvasHeight - 1)
-      var boundingBoxBottom = s.line(
-        1,
-        canvasHeight - 1,
-        canvasWidth - 1,
-        canvasHeight - 1
-      )
-      var horizontalGuide = s.line(
-        0,
-        canvasHeight / 2,
-        canvasWidth,
-        canvasHeight / 2
-      )
+        s.node.style.width = `${canvasWidth}px`
+        s.node.style.height = `${canvasHeight}px`
+        s.node.setAttribute("viewBox", `0 0 ${canvasWidth} ${canvasHeight}`)
 
-      boundingBoxTop.attr({ class: "stroke-box" })
-      boundingBoxLeft.attr({ class: "stroke-box" })
-      boundingBoxBottom.attr({ class: "stroke-box" })
-      horizontalGuide.attr({ class: "stroke-box-guide" })
-
-      let pathNumber = 1
-
-      allPaths.forEach((currentPath) => {
-        var moveFrameMatrix = new (Snap as any).Matrix()
-        moveFrameMatrix.translate(frameSize * (pathNumber - 1) - 4, -4)
-
-        // Draw frame guides
-        var verticalGuide = s.line(
-          frameSize * pathNumber - frameSize / 2,
+        var boundingBoxTop = s.line(1, 1, canvasWidth - 1, 1)
+        var boundingBoxLeft = s.line(1, 1, 1, canvasHeight - 1)
+        var boundingBoxBottom = s.line(
           1,
-          frameSize * pathNumber - frameSize / 2,
+          canvasHeight - 1,
+          canvasWidth - 1,
           canvasHeight - 1
         )
-        var frameBoxRight = s.line(
-          frameSize * pathNumber - 1,
-          1,
-          frameSize * pathNumber - 1,
-          canvasHeight - 1
+        var horizontalGuide = s.line(
+          0,
+          canvasHeight / 2,
+          canvasWidth,
+          canvasHeight / 2
         )
-        verticalGuide.attr({ class: "stroke-box-guide" })
-        frameBoxRight.attr({ class: "stroke-box-guide" })
 
-        // Draw previous strokes
-        drawnPaths.forEach((existingPath) => {
-          var localPath = existingPath.clone()
-          localPath.transform(moveFrameMatrix)
-          localPath.attr({ class: "stroke-existing-path" })
-          s.append(localPath)
-        })
+        boundingBoxTop.attr({ class: "stroke-box" })
+        boundingBoxLeft.attr({ class: "stroke-box" })
+        boundingBoxBottom.attr({ class: "stroke-box" })
+        horizontalGuide.attr({ class: "stroke-box-guide" })
 
-        // Draw current stroke
-        currentPath.transform(frameOffsetMatrix)
-        currentPath.transform(moveFrameMatrix)
-        currentPath.attr({ class: "stroke-current-path" })
-        s.append(currentPath)
+        let pathNumber = 1
 
-        // Draw stroke start point
-        var match = strokeRe.exec(currentPath.node.getAttribute("d") || "")
-        var pathStartX = match?.[1]
-        var pathStartY = match?.[2]
+        allPaths.forEach((currentPath) => {
+          var moveFrameMatrix = new (Snap as any).Matrix()
+          moveFrameMatrix.translate(frameSize * (pathNumber - 1) - 4, -4)
 
-        if (!pathStartX || !pathStartY) {
+          // Draw frame guides
+          var verticalGuide = s.line(
+            frameSize * pathNumber - frameSize / 2,
+            1,
+            frameSize * pathNumber - frameSize / 2,
+            canvasHeight - 1
+          )
+          var frameBoxRight = s.line(
+            frameSize * pathNumber - 1,
+            1,
+            frameSize * pathNumber - 1,
+            canvasHeight - 1
+          )
+          verticalGuide.attr({ class: "stroke-box-guide" })
+          frameBoxRight.attr({ class: "stroke-box-guide" })
+
+          // Draw previous strokes
+          drawnPaths.forEach((existingPath) => {
+            var localPath = existingPath.clone()
+            localPath.transform(moveFrameMatrix)
+            localPath.attr({ class: "stroke-existing-path" })
+            s.append(localPath)
+          })
+
+          // Draw current stroke
+          currentPath.transform(frameOffsetMatrix)
+          currentPath.transform(moveFrameMatrix)
+          currentPath.attr({ class: `stroke-current-path ${darkMode}` }) //
+          s.append(currentPath)
+
+          // Draw stroke start point
+          var match = strokeRe.exec(currentPath.node.getAttribute("d") || "")
+          var pathStartX = match?.[1]
+          var pathStartY = match?.[2]
+
+          if (!pathStartX || !pathStartY) {
+            pathNumber++
+            return
+          }
+
+          var strokeStart = s.circle(+pathStartX, +pathStartY, 4)
+          strokeStart.attr({ class: "stroke-path-start" })
+          strokeStart.transform(moveFrameMatrix)
+
           pathNumber++
-          return
-        }
-
-        var strokeStart = s.circle(+pathStartX, +pathStartY, 4)
-        strokeStart.attr({ class: "stroke-path-start" })
-        strokeStart.transform(moveFrameMatrix)
-
-        pathNumber++
-        drawnPaths.push(currentPath.clone())
-      })
+          drawnPaths.push(currentPath.clone())
+        })
+      }
     }
-  }
 
-  load(kanjiSvgUrl, makeStrokeOrderDiagram)
+    load(kanjiSvgUrl, makeStrokeOrderDiagram)
+  }, [])
 }
 
 export default createStrokeOrderDiagram

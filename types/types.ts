@@ -29,10 +29,13 @@ export interface KanjiDetails {
 }
 
 export interface ExtendedVocabulary extends Vocabulary {
-  kanjiDetails: KanjiDetails
+  kanjisInWord: string[]
 }
 
 export interface QueryOptions {
+  where?: {
+    vocabularyPackId: string
+  }
   take?: number
   skip?: number
   cursor?: {
@@ -44,5 +47,5 @@ export interface QueryOptions {
 }
 
 export interface StrokeGraphProps {
-  kanjiDetails: KanjiDetails
+  kanji: string
 }

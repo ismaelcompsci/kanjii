@@ -20,6 +20,8 @@ model User {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   progress       Int       @default(0)
+  first          Boolean   @default(true)
+  lastCursor     String?
 
   doneVocabulary Vocabulary[]
   accounts       Account[]
@@ -57,4 +59,17 @@ model Vocabulary {
 
   User   User?   @relation(fields: [userId], references: [id])
   userId String? @db.ObjectId
+
+  vocabularyPack   VocabularyPack @relation(fields: [vocabularyPackId], references: [id])
+  vocabularyPackId String         @db.ObjectId
+}
+
+model VocabularyPack {
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  vocabularyCount Int    @default(0)
+
+  Vocabulary Vocabulary[]
+
+  @@unique([name])
 }
