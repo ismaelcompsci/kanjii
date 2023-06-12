@@ -110,7 +110,7 @@ function createStrokeOrderDiagram(
     }
 
     load(kanjiSvgUrl, makeStrokeOrderDiagram)
-  }, [])
+  }, [theme])
 }
 
 export default createStrokeOrderDiagram

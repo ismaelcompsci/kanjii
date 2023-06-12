@@ -27,7 +27,7 @@ const VocabularyPage: React.FC<VocabularyPageProps> = ({ vocabPackages }) => {
   return (
     <div>
       {vocabPackages.map((pack) => (
-        <Card>
+        <Card key={pack.id}>
           <CardHeader className="grid grid-cols-[1fr_110px] items-start gap-4 space-y-0">
             <div>
               <CardTitle>{pack.name}</CardTitle>

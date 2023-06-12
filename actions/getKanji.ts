@@ -5,11 +5,12 @@ type KanjiParmas = {
   lastCursor?: string
   first?: boolean
   packId?: string
+  page?: number
 }
 
-const getKanji = async ({ take, lastCursor, first, packId }: KanjiParmas) => {
+const getKanji = async ({ take, page, packId }: KanjiParmas) => {
   const response = await axios.get(`/api/packs/${packId}`, {
-    params: { take, lastCursor, first },
+    params: { take, page },
   })
 
   return response?.data
