@@ -1,8 +1,5 @@
-import axios from "axios"
 import { ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
-
-import { KanjiDetails } from "@/types/types"
 
 // Regular expression unicode blocks collected from
 // http://www.localizingjapan.com/blog/2012/01/20/regular-expressions-for-japanese-text/

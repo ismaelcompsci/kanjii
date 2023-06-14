@@ -1,3 +1,5 @@
+"use client"
+
 import StrokeGraph from "./stroke-graph"
 
 interface MainKanjiProps {
@@ -9,7 +11,6 @@ interface MainKanjiProps {
 }
 
 // TODO : add radix tool bar as carousel?
-
 const MainKanji: React.FC<MainKanjiProps> = ({
   word,
   reading,
@@ -50,8 +51,8 @@ const MainKanji: React.FC<MainKanjiProps> = ({
           </div>
         </div>
       </div>
-      <div className="w-auto">
-        <div className="w-full relative float-left pl-[0.9375rem] pr-[0.9375rem]">
+      <div className="w-auto pl-[0.9375rem] pr-[0.9375rem]">
+        <div className="w-full relative float-left">
           <h2>Stroke Order</h2>
           {word.split("").map((k, index) => (
             <div key={index}>
@@ -67,4 +68,121 @@ const MainKanji: React.FC<MainKanjiProps> = ({
 
 export default MainKanji
 
-// container m-0 p-0 border rounded-md border-red-50 flex items-center justify-items-start float-left
+// ANIMATION  TODO
+// const { theme } = useTheme()
+{
+  /* <div>
+          <svg ref={svgRef}></svg>
+        </div> */
+}
+
+// const svgRef = useRef<SVGSVGElement | null>(null)
+// const darkMode = theme === "dark" ? "dark" : ""
+
+// const kanjiUrlFromKanji = kanjiURL(word)
+
+// useEffect(() => {
+//   const makeAnimation = (f: Fragment) => {
+//     if (svgRef.current) {
+//       const s = Snap(svgRef.current)
+//       var diagramSize = 100
+//       var allPaths = f.selectAll("path")
+//       var drawnPaths: Element[] = []
+
+//       s.attr({
+//         width: diagramSize,
+//         height: diagramSize,
+//         viewBox: `0 0 ${diagramSize} ${diagramSize}`,
+//       })
+
+//       var boundingBoxTop = s.line(1, 1, diagramSize - 1, 1)
+//       var boundingBoxLeft = s.line(1, 1, 1, diagramSize - 1)
+//       var boundingBoxRight = s.line(
+//         diagramSize - 1,
+//         1,
+//         diagramSize - 1,
+//         diagramSize - 1
+//       )
+//       var boundingBoxBottom = s.line(
+//         1,
+//         diagramSize - 1,
+//         diagramSize - 1,
+//         diagramSize - 1
+//       )
+//       var horizontalGuide = s.line(
+//         0,
+//         diagramSize / 2,
+//         diagramSize,
+//         diagramSize / 2
+//       )
+//       var verticalGuide = s.line(
+//         diagramSize / 2,
+//         1,
+//         diagramSize / 2,
+//         diagramSize - 1
+//       )
+
+//       boundingBoxTop.attr({ class: "stroke-box" })
+//       boundingBoxLeft.attr({ class: "stroke-box" })
+//       boundingBoxBottom.attr({ class: "stroke-box" })
+//       boundingBoxRight.attr({ class: "stroke-box" })
+//       horizontalGuide.attr({ class: "stroke-box-guide" })
+//       verticalGuide.attr({ class: "stroke-box-guide" })
+
+//       allPaths.forEach((currentPath, index) => {
+//         currentPath.attr({ class: `stroke-current-path ${darkMode}` })
+//         currentPath.transform("scale(0.89)")
+
+//         s.append(currentPath)
+//       })
+//     }
+//   }
+//   load(kanjiUrlFromKanji, makeAnimation)
+// }, [])
+
+// const animateKanji = () => {
+//   if (svgRef.current) {
+//     const s = Snap(svgRef.current)
+
+//     const lines = s.selectAll("path")
+//     const totalLines = lines.length
+//     let currentLineIndex = 0
+
+//     lines.forEach((line) => {
+//       line.attr({ display: "none" })
+//     })
+
+//     const animateLine = () => {
+//       // @ts-ignore
+//       const line = lines[currentLineIndex]
+//       line.attr({ display: "block" })
+//       const lineLength = line.getTotalLength()
+
+//       line.attr({ class: `stroke-current-path ${darkMode}` })
+
+//       line.attr({
+//         "stroke-dasharray": lineLength + " " + lineLength,
+//         "stroke-dashoffset": lineLength,
+//         "stroke-miterlimit": 10,
+//       })
+
+//       line.animate(
+//         {
+//           strokeDashoffset: 0,
+//         },
+//         1300,
+//         mina.easeinout,
+//         () => {
+//           currentLineIndex++
+//           if (currentLineIndex < totalLines) {
+//             animateLine() // Animate the next line
+//           } else {
+//             console.log("Animation complete")
+//           }
+//         }
+//       )
+//     }
+
+//     animateLine() // Start the animation
+//   }
+// }

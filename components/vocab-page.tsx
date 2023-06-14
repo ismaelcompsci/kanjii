@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation"
 import { VocabularyPack } from "@prisma/client"
-import { Star } from "lucide-react"
 import queryString from "query-string"
 
 import { Button } from "./ui/button"

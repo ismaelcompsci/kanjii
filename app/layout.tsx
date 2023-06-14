@@ -1,6 +1,5 @@
 import "@/styles/globals.css"
 import { Metadata } from "next"
-import localFont from "next/font/local"
 import ModalProvider from "@/providers/ModalProvider"
 
 import { siteConfig } from "@/config/site"

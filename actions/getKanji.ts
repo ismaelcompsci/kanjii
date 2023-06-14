@@ -1,19 +1,25 @@
-import axios from "axios"
-
 type KanjiParmas = {
-  take?: number
+  take: number
   lastCursor?: string
   first?: boolean
   packId?: string
-  page?: number
+  page: number
 }
 
-const getKanji = async ({ take, page, packId }: KanjiParmas) => {
-  const response = await axios.get(`/api/packs/${packId}`, {
-    params: { take, page },
-  })
+type kanjiData = {
+  page: number
+  data: any
+}
 
-  return response?.data
+const getKanji = async ({
+  take,
+  page,
+  packId,
+}: KanjiParmas): Promise<kanjiData> => {
+  const response = await fetch(`/api/packs/${packId}?take=${take}&page=${page}`)
+  const data = await response.json()
+
+  return { page: page, data: data }
 }
 
 export default getKanji

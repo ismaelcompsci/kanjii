@@ -1,87 +1,95 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import getKanji from "@/actions/getKanji"
+import { useEffect } from "react"
 import { User, Vocabulary } from "@prisma/client"
-import { useInfiniteQuery } from "@tanstack/react-query"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 
-import { ExtendedVocabulary } from "@/types/types"
+import useKanjiData from "@/hooks/useKanjiData"
 import MainKanji from "@/components/main-kanji"
 import MainKanjiSkeleton from "@/components/skeletons/main-kanji-skeleton"
 
 import { Button } from "./ui/button"
+import { Skeleton } from "./ui/skeleton"
 
 interface KanjiPageProps {
   currentUser: User | null
   packId: string
 }
-
-// TODO : Update user.first and lastcursor in db
+// TODO: MIGRATE TO SUPABASE STRIPE HAVE VOCABULARY STAY IN MONGODB
 // aka new route in /api/kanji.UPDATE
-
 // TODO: UPDATE USERS CURRENT PAGE AND CURRENT KANJI [index in curretn page]
-//  TODO: THINK OF EDGE CASES  FOR CAROUSEL
 const KanjiPage: React.FC<KanjiPageProps> = ({ currentUser, packId }) => {
-  const [navButtons, setNavButtons] = useState(null)
-  const [currentKIndex, setCurrentKIndex] = useState(0)
-  const [currentWord, setCurrentWord] = useState<Vocabulary | null>(null)
+  const initialPage = currentUser?.page || 0
+  // TODO: GET VOCABPACK MAX PAGES
 
   const {
-    data,
-    error,
-    isLoading,
-    hasNextPage,
-    fetchNextPage,
+    currentKIndex,
+    currentWord,
+    selectedButton,
+    currentPage,
     isSuccess,
+    isLoading,
     isFetchingNextPage,
-  } = useInfiniteQuery({
-    queryFn: ({ pageParam = 1 }) =>
-      getKanji({
-        take: 5,
-        page: pageParam,
-        packId: packId,
-      }),
-    queryKey: ["kanji"],
-    getNextPageParam: (_, pages) => {
-      return pages.length + 1
-    },
-  })
-
-  const _kanji = data?.pages.map((page) => page)
+    _kanji,
+    handleNext,
+    handlePrev,
+    handleClick,
+  } = useKanjiData({ initialPage, packId })
 
   useEffect(() => {
-    data && isSuccess && setCurrentWord(_kanji?.[currentKIndex][0])
-  }, [currentKIndex])
+    console.log("SENDD", currentPage)
+  }, [currentPage])
 
-  const handleClick = (k: Vocabulary, index: number) => {
-    setCurrentWord(k)
-  }
-
-  const handleNext = async () => {
-    hasNextPage && (await fetchNextPage())
-    setCurrentKIndex((prev) => prev + 1)
-  }
-  const handlePrev = () => {
-    if (currentKIndex === 0) {
-      return
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === "ArrowLeft") {
+        handlePrev()
+      } else if (event.key === "ArrowRight") {
+        handleNext()
+      }
     }
-    setCurrentKIndex((prev) => prev - 1)
-  }
+
+    document.addEventListener("keydown", handleKeyPress)
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress)
+    }
+  }, [handlePrev, handleNext])
 
   return (
     <div>
       <div className="w-full flex items-center justify-center gap-2 pt-2">
-        <ArrowLeft onClick={handlePrev} className="hover:text-slate-500" />
+        {isSuccess && !isFetchingNextPage && (
+          <ArrowLeft
+            onClick={handlePrev}
+            className="hover:text-slate-500 cursor-pointer transform"
+          />
+        )}
         {isSuccess &&
-          _kanji?.[currentKIndex].map((k: Vocabulary, index: number) => (
-            <Button onClick={() => handleClick(k, index)} key={index}>
-              {k.word}
+          !isFetchingNextPage &&
+          _kanji?.[currentKIndex]?.data?.map((k: Vocabulary, index: number) => (
+            <Button
+              onClick={() => handleClick(k, index)}
+              key={index}
+              variant="outline"
+              className={`${
+                selectedButton === index ? "bg-accent" : ""
+              } w-[62px] h-[40px] px-0`}
+            >
+              <span className="w-full h-full overflow-hidden whitespace-nowrap text-ellipsis">
+                {k.word}
+              </span>
             </Button>
           ))}
-        <ArrowRight onClick={handleNext} className="hover:text-slate-500" />
+
+        {isSuccess && !isFetchingNextPage && (
+          <ArrowRight
+            onClick={handleNext}
+            className="hover:text-slate-500 cursor-pointer"
+          />
+        )}
       </div>
-      {currentWord && (
+      {currentWord && !isFetchingNextPage && (
         <MainKanji
           key={currentWord.id}
           word={currentWord.word}
@@ -92,9 +100,20 @@ const KanjiPage: React.FC<KanjiPageProps> = ({ currentUser, packId }) => {
         />
       )}
 
-      {(isLoading || isFetchingNextPage) && <MainKanjiSkeleton />}
+      {(isFetchingNextPage || isLoading) && (
+        <>
+          <div className="w-full flex items-center justify-center gap-2 pt-2">
+            {[1, 2, 3, 4, 5].map((index) => (
+              <Skeleton key={index} className=" w-[62px] h-[40px] px-0" />
+            ))}
+          </div>
+          <MainKanjiSkeleton />
+        </>
+      )}
     </div>
   )
 }
 
 export default KanjiPage
+
+/* */

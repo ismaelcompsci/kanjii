@@ -1,6 +1,12 @@
 import { MutableRefObject, useEffect } from "react"
 import { useTheme } from "next-themes"
-import Snap, { Element, Fragment, Paper, load } from "snapsvg-cjs-ssr-safe"
+
+import Snap, {
+  Element,
+  Fragment,
+  Paper,
+  load,
+} from "@/types/snapsvg-cjs-ssr-safe"
 
 function createStrokeOrderDiagram(
   kanjiSvgUrl: string,
@@ -12,6 +18,7 @@ function createStrokeOrderDiagram(
     const darkMode = theme === "dark" ? "dark" : ""
 
     const makeStrokeOrderDiagram = (f: Fragment): void => {
+      // most code is from jisho.org
       if (svgRef.current && svgHolder.current) {
         const s: Paper = Snap(svgRef.current)
         var diagramSize = 200
@@ -28,7 +35,6 @@ function createStrokeOrderDiagram(
         var frameOffsetMatrix = new (Snap as any).matrix()
         frameOffsetMatrix.translate(-frameSize / 16 + 2, -frameSize / 16 + 2)
         // Set drawing area
-
         s.node.style.width = `${canvasWidth}px`
         s.node.style.height = `${canvasHeight}px`
         s.node.setAttribute("viewBox", `0 0 ${canvasWidth} ${canvasHeight}`)

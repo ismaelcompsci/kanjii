@@ -1,5 +1,4 @@
 import getCurrentUser from "@/actions/getCurrentUser"
-import getPackById from "@/actions/getPackById"
 
 import KanjiPage from "@/components/kanji-page"
 
