@@ -1,4 +1,5 @@
 import { Vocabulary } from "@prisma/client"
+import Stripe from "stripe"
 
 export interface Example {
   japanese: string

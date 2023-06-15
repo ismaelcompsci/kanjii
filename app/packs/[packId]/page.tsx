@@ -7,7 +7,7 @@ interface IParams {
 }
 
 const Package = async ({ params }: { params: IParams }) => {
-  const currentUser = await getCurrentUser()
+  const currentUser = null
 
   return (
     <div>

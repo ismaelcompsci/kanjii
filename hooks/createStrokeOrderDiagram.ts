@@ -1,12 +1,8 @@
 import { MutableRefObject, useEffect } from "react"
 import { useTheme } from "next-themes"
-
-import Snap, {
-  Element,
-  Fragment,
-  Paper,
-  load,
-} from "@/types/snapsvg-cjs-ssr-safe"
+import { Fragment, Paper } from "snapsvg"
+// @ts-ignore
+import Snap from "snapsvg-cjs-ssr-safe"
 
 function createStrokeOrderDiagram(
   kanjiSvgUrl: string,
@@ -29,6 +25,7 @@ function createStrokeOrderDiagram(
         )
         var allPaths = f.selectAll("path")
         var drawnPaths: Element[] = []
+        // @ts-ignore
         var canvasWidth = (allPaths.length * diagramSize) / 2
         var canvasHeight = diagramSize / 2
         var frameSize = diagramSize / 2
@@ -83,6 +80,7 @@ function createStrokeOrderDiagram(
 
           // Draw previous strokes
           drawnPaths.forEach((existingPath) => {
+            // @ts-ignore
             var localPath = existingPath.clone()
             localPath.transform(moveFrameMatrix)
             localPath.attr({ class: "stroke-existing-path" })
@@ -110,12 +108,13 @@ function createStrokeOrderDiagram(
           strokeStart.transform(moveFrameMatrix)
 
           pathNumber++
+          // @ts-ignore
           drawnPaths.push(currentPath.clone())
         })
       }
     }
 
-    load(kanjiSvgUrl, makeStrokeOrderDiagram)
+    Snap.load(kanjiSvgUrl, makeStrokeOrderDiagram)
   }, [theme])
 }
 
