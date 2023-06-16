@@ -48,7 +48,7 @@ export default function IndexPage() {
             value={inputText}
             type="text"
             placeholder="Kana or Kanji"
-            className="border-[#adfa1d] focus:border-border"
+            className="border-accent focus:border-border"
           />
           <Button onClick={generate} className="">
             Generate

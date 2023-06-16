@@ -30,17 +30,23 @@ const SiteHeader = () => {
   const { toast } = useToast()
 
   const handleLogout = async () => {
-    toast({
-      title: "Logged out",
-      description: "you are currently logged out",
-    })
-    return
     const { error } = await supabaseClient.auth.signOut()
     router.refresh()
 
     if (error) {
       console.log(error, "SITEHEADER_LOGOUT")
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem logging out please try again.",
+      })
     }
+
+    toast({
+      title: "Logged out",
+      description: "you are currently logged out",
+    })
+    return
   }
 
   return (
@@ -53,18 +59,17 @@ const SiteHeader = () => {
             {user ? (
               // Abastract to new componnect
               <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <Button
-                    onClick={() => {}}
-                    className="rounded-full px-3 py-3 disabled:cursor-not-allowed disabled:opacity-50 hover:opacity-75 transition"
-                  >
-                    <Icons.avatar height={18} width={18} />
-                  </Button>
+                <DropdownMenuTrigger className="rounded-full px-3 py-3 disabled:cursor-not-allowed disabled:opacity-50 hover:opacity-75 transition">
+                  <Icons.avatar height={18} width={18} />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-30">
                   <DropdownMenuItem onClick={() => router.push("/account")}>
                     <User className="mr-2 h-4 w-4" />
                     <span>Profile</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => {}}>
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Settings</span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout}>
@@ -92,12 +97,3 @@ const SiteHeader = () => {
 }
 
 export default SiteHeader
-
-// TODO
-// <Avatar>
-//   <AvatarImage
-//     src={user || "/images/placeholder.png"}
-//     alt="user"
-//   />
-//   <AvatarFallback>CN</AvatarFallback>
-// </Avatar>
