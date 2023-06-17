@@ -7,7 +7,8 @@ import { signIn } from "next-auth/react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 
-import useLoginModal from "@/hooks/useAuthModal"
+import { useToast } from "@/hooks/use-toast"
+import useLoginModal from "@/hooks/useLoginModal"
 import useRegisterModal from "@/hooks/useRegisterModal"
 
 import { Icons } from "./icons"
@@ -36,8 +37,9 @@ const registerSchema = z.object({
 
 const RegisterModal = () => {
   const [isLoading, setIsLoading] = useState(false)
-  const loginModal = useLoginModal()
   const registerModal = useRegisterModal()
+  const loginModal = useLoginModal()
+  const { toast } = useToast()
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
@@ -54,12 +56,21 @@ const RegisterModal = () => {
     axios
       .post("/api/register", values)
       .then(() => {
-        // TODO : ADD TOAST
+        toast({
+          title: "Successfully registered!",
+          description: "Please login now! Thank you!",
+        })
+
         registerModal.onClose()
         loginModal.onOpen()
       })
       .catch((error) => {
-        // TODO : ADD TOAST
+        toast({
+          variant: "destructive",
+          title: "Failed to registered!",
+          description: "Please try again!",
+        })
+        console.log(error)
       })
       .finally(() => {
         setIsLoading(false)
@@ -71,7 +82,6 @@ const RegisterModal = () => {
     registerModal.onOpen()
   }, [loginModal, registerModal])
 
-  // TODO : ADD SOCIAL LOGINS
   return (
     <Modal
       title="Welcome to Kanjii"

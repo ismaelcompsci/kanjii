@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import getKanji from "@/actions/getKanji"
-import { Vocabulary } from "@prisma/client"
+import { User, Vocabulary } from "@prisma/client"
 import { useInfiniteQuery } from "@tanstack/react-query"
 
 interface KanjiData {
@@ -22,10 +23,13 @@ interface KanjiData {
 const useKanjiData = ({
   initialPage,
   packId,
+  currentUser,
 }: {
   initialPage: number
   packId: string
+  currentUser: User | null
 }): KanjiData => {
+  const router = useRouter()
   const [currentKIndex, setCurrentKIndex] = useState(0)
   const [currentWord, setCurrentWord] = useState<Vocabulary | null>(null)
   const [selectedButton, setSelectedButton] = useState(0)
@@ -65,11 +69,28 @@ const useKanjiData = ({
     },
   })
 
-  if (isError) {
-    console.log(error)
-  }
-
   const _kanji = data?.pages.sort((a, b) => a.page - b.page)
+
+  useEffect(() => {
+    const updatePage = async () => {
+      const response = await fetch(`/api/users/${currentUser?.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          page: currentPage,
+          packId: packId,
+        }),
+      })
+
+      if (!response?.ok) {
+        return console.log("UPDATEPAGEERROR", response)
+      }
+    }
+    updatePage()
+    router.refresh()
+  }, [currentPage])
 
   useEffect(() => {
     if (_kanji && currentKIndex < _kanji.length) {

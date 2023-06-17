@@ -7,11 +7,19 @@ interface IParams {
 }
 
 const Package = async ({ params }: { params: IParams }) => {
-  const currentUser = null
+  const currentUser = await getCurrentUser()
+
+  const currentPack = currentUser?.seenVocabularyPacks.find(
+    (pack) => pack.vocabularyPackId === params.packId
+  )
 
   return (
     <div>
-      <KanjiPage packId={params.packId} currentUser={currentUser} />
+      <KanjiPage
+        packId={params.packId}
+        currentUser={currentUser}
+        currentPack={currentPack || null}
+      />
     </div>
   )
 }

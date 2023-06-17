@@ -1,15 +1,25 @@
 import {
+  ChevronLeft,
+  ChevronRight,
   Loader2,
+  LogOut,
   LucideProps,
   Moon,
+  Settings,
   SunMedium,
   Twitter,
+  User,
   type Icon as LucideIcon,
 } from "lucide-react"
 
 export type Icon = LucideIcon
 
 export const Icons = {
+  left: ChevronLeft,
+  right: ChevronRight,
+  settings: Settings,
+  logout: LogOut,
+  user: User,
   spinner: Loader2,
   sun: SunMedium,
   moon: Moon,

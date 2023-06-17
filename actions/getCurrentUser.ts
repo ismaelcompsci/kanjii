@@ -14,6 +14,9 @@ export default async function getCurrentUser() {
       where: {
         email: session.user.email as string,
       },
+      include: {
+        seenVocabularyPacks: true,
+      },
     })
 
     if (!currentUser) {

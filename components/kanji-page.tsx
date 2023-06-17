@@ -1,32 +1,35 @@
 "use client"
 
 import { useEffect } from "react"
-import { User, Vocabulary } from "@prisma/client"
+import { SeenVocabularyPack, User, Vocabulary } from "@prisma/client"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 
 import useKanjiData from "@/hooks/useKanjiData"
 import MainKanji from "@/components/main-kanji"
 import MainKanjiSkeleton from "@/components/skeletons/main-kanji-skeleton"
 
+import { Icons } from "./icons"
 import { Button } from "./ui/button"
 import { Skeleton } from "./ui/skeleton"
 
 interface KanjiPageProps {
   currentUser: User | null
+  currentPack: SeenVocabularyPack | null
   packId: string
 }
-// TODO: MIGRATE TO SUPABASE STRIPE HAVE VOCABULARY STAY IN MONGODB
-// aka new route in /api/kanji.UPDATE
 // TODO: UPDATE USERS CURRENT PAGE AND CURRENT KANJI [index in curretn page]
-const KanjiPage: React.FC<KanjiPageProps> = ({ currentUser, packId }) => {
-  const initialPage = currentUser?.page || 0
-  // TODO: GET VOCABPACK MAX PAGES
+const KanjiPage: React.FC<KanjiPageProps> = ({
+  currentUser,
+  currentPack,
+  packId,
+}) => {
+  const initialPage = currentPack?.currentPage || 0
 
+  // TODO: GET VOCABPACK MAX PAGES
   const {
     currentKIndex,
     currentWord,
     selectedButton,
-    currentPage,
     isSuccess,
     isLoading,
     isFetchingNextPage,
@@ -34,11 +37,7 @@ const KanjiPage: React.FC<KanjiPageProps> = ({ currentUser, packId }) => {
     handleNext,
     handlePrev,
     handleClick,
-  } = useKanjiData({ initialPage, packId })
-
-  useEffect(() => {
-    console.log("SENDD", currentPage)
-  }, [currentPage])
+  } = useKanjiData({ initialPage, packId, currentUser })
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -60,9 +59,9 @@ const KanjiPage: React.FC<KanjiPageProps> = ({ currentUser, packId }) => {
     <div>
       <div className="w-full flex items-center justify-center gap-2 pt-2">
         {isSuccess && !isFetchingNextPage && (
-          <ArrowLeft
+          <Icons.left
             onClick={handlePrev}
-            className="hover:text-slate-500 cursor-pointer transform"
+            className="hover:text-slate-500 duration-300 hover:scale-125 transition ease-in-out delay-150 cursor-pointer transform"
           />
         )}
         {isSuccess &&
@@ -83,9 +82,9 @@ const KanjiPage: React.FC<KanjiPageProps> = ({ currentUser, packId }) => {
           ))}
 
         {isSuccess && !isFetchingNextPage && (
-          <ArrowRight
+          <Icons.right
             onClick={handleNext}
-            className="hover:text-slate-500 cursor-pointer"
+            className="hover:text-slate-500 duration-300 hover:scale-125  transition ease-in-out delay-150 cursor-pointer transform"
           />
         )}
       </div>
