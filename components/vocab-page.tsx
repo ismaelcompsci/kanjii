@@ -1,19 +1,12 @@
 "use client"
 
-import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { SeenVocabularyPack, User, VocabularyPack } from "@prisma/client"
-import { Circle, Star } from "lucide-react"
 import queryString from "query-string"
 
-import { Button } from "./ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "./ui/card"
+import { ExtendedVocabularyPack } from "@/types/types"
+
+import VocabularyCard from "./vocabulary-card"
 
 interface VocabularyPageProps {
   vocabPackages: VocabularyPack[]
@@ -29,7 +22,7 @@ const VocabularyPage: React.FC<VocabularyPageProps> = ({
 }) => {
   const router = useRouter()
 
-  const getUserMarkedPacks = () => {
+  const getUserMarkedPacks = (): ExtendedVocabularyPack[] => {
     if (currentUser) {
       const infoVocabPacks = vocabPackages.map((pack) => {
         const totalPages = Math.ceil(pack.vocabularyCount / 5)
@@ -50,9 +43,7 @@ const VocabularyPage: React.FC<VocabularyPageProps> = ({
       })
       return infoVocabPacks
     }
-    return vocabPackages.map((pack) => {
-      return { ...pack, pageInfo: null }
-    })
+    return vocabPackages
   }
 
   const userMarkedPacks = getUserMarkedPacks()
@@ -67,40 +58,22 @@ const VocabularyPage: React.FC<VocabularyPageProps> = ({
 
   return (
     // TODO : UPDATE STARS AND UPDATED AT
-    <div>
+    <div
+      className="grid 
+    grid-cols-2 
+    sm:grid-cols-3 
+    md:grid-cols-3 
+    lg:grid-cols-4 
+    xl:grid-cols-5 
+    2xl:grid-cols-8 
+    gap-4 
+    mt-4
+    mx-4
+    "
+    >
       {userMarkedPacks?.map((pack) => {
         return (
-          <Card key={pack.id}>
-            <CardHeader className="grid grid-cols-[1fr_110px] items-start gap-4 space-y-0">
-              <div className="space-y-1">
-                <CardTitle>{pack.name}</CardTitle>
-                <CardDescription>Count: {pack.vocabularyCount}</CardDescription>
-              </div>
-              <div className="flex items-center rounded-md text-secondary-foreground">
-                <Button
-                  className="px-3"
-                  onClick={() => {
-                    handleClick(pack)
-                  }}
-                >
-                  Start
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="flex space-x-4 text-sm text-muted-foreground">
-                <div className="flex items-center">
-                  <Circle className="mr-1 h-3 w-3 fill-sky-400 text-sky-400" />
-                  {pack.pageInfo}
-                </div>
-                <div className="flex items-center">
-                  <Star className="mr-1 h-3 w-3" />
-                  10k
-                </div>
-                <div>Updated April 2023</div>
-              </div>
-            </CardContent>
-          </Card>
+          <VocabularyCard key={pack.id} pack={pack} handleClick={handleClick} />
         )
       })}
     </div>
@@ -108,7 +81,3 @@ const VocabularyPage: React.FC<VocabularyPageProps> = ({
 }
 
 export default VocabularyPage
-
-// {currentUser && pack?.pageInfo && (
-//   <CardDescription>{pack.pageInfo}</CardDescription>
-// )}

@@ -18,7 +18,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-// TODO : EXPORT FUNCTION USED BY SERVER IN A DIFFERENT FILE
 export const findAll = function (pattern: RegExp | string, string: string) {
   var regex = new RegExp(pattern, "g")
   var matches = []

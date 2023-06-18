@@ -1,5 +1,6 @@
 import "@/styles/globals.css"
 import { Metadata } from "next"
+import Head from "next/head"
 import getCurrentUser from "@/actions/getCurrentUser"
 import ModalProvider from "@/providers/ModalProvider"
 
@@ -42,7 +43,6 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     <>
       <html lang="en" suppressHydrationWarning>
         <QueryWrapper>
-          <head />
           <body
             className={cn(
               "min-h-screen bg-background font-sans antialiased",

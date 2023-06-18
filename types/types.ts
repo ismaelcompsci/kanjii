@@ -49,3 +49,10 @@ export interface QueryOptions {
 export interface StrokeGraphProps {
   kanji: string
 }
+
+export interface ExtendedVocabularyPack {
+  pageInfo?: string | null
+  id: string
+  name: string
+  vocabularyCount: number
+}
