@@ -10,21 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
-  name           String?
-  email          String?   @unique
-  emailVerified  DateTime?
-  image          String?
-  hashedPassword String?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-
-  seenVocabularyPacks SeenVocabularyPack[]
-
-  accounts Account[]
-}
-
 model Account {
   id                String  @id @default(auto()) @map("_id") @db.ObjectId
   userId            String  @db.ObjectId
@@ -44,6 +29,35 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
+model Session {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken String   @unique
+  userId       String   @db.ObjectId
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  name           String?
+  email          String?   @unique
+  emailVerified  DateTime?
+  image          String?
+  hashedPassword String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  username String? @unique
+
+  accounts Account[]
+  sessions Session[]
+
+  seenVocabularyPacks SeenVocabularyPack[]
+
+  Like           Like[]
+  VocabularyPack VocabularyPack[]
+}
+
 model Vocabulary {
   id              String  @id @default(auto()) @map("_id") @db.ObjectId
   word            String
@@ -55,7 +69,7 @@ model Vocabulary {
   sentenceSound   String?
   hint            String?
 
-  vocabularyPack   VocabularyPack @relation(fields: [vocabularyPackId], references: [id])
+  vocabularyPack   VocabularyPack @relation(fields: [vocabularyPackId], references: [id], onDelete: Cascade)
   vocabularyPackId String         @db.ObjectId
 }
 
@@ -64,10 +78,29 @@ model VocabularyPack {
   name            String
   vocabularyCount Int    @default(0)
 
-  Vocabulary         Vocabulary[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  creator User @relation(fields: [creatorId], references: [id])
+
+  vocabulary         Vocabulary[]
   SeenVocabularyPack SeenVocabularyPack[]
+  likes              Like[]
+  creatorId          String               @db.ObjectId
+
+  counted Boolean @default(false)
 
   @@unique([name])
+}
+
+model Like {
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  user             User           @relation(fields: [userId], references: [id])
+  userId           String         @db.ObjectId
+  vocabularyPack   VocabularyPack @relation(fields: [vocabularyPackId], references: [id])
+  vocabularyPackId String         @db.ObjectId
+
+  @@unique([userId, vocabularyPackId])
 }
 
 model SeenVocabularyPack {

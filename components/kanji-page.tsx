@@ -17,7 +17,7 @@ interface KanjiPageProps {
   currentPack: SeenVocabularyPack | null
   packId: string
 }
-// TODO: UPDATE USERS CURRENT PAGE AND CURRENT KANJI [index in curretn page]
+// TODO: UPDATE USERS CURRENT PAGE AND CURRENT KANJI [index in current page]
 const KanjiPage: React.FC<KanjiPageProps> = ({
   currentUser,
   currentPack,

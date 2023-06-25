@@ -10,7 +10,6 @@ interface MainKanjiProps {
   enSentence: string
 }
 
-// TODO : add radix tool bar as carousel?
 const MainKanji: React.FC<MainKanjiProps> = ({
   word,
   reading,
@@ -39,7 +38,7 @@ const MainKanji: React.FC<MainKanjiProps> = ({
           </div>
           <div>
             <div className="font-extralight">sentence</div>
-            {/* MAKE THIS SAFER STRING TO HTML */}
+            {/* TODO MAKE THIS SAFER STRING TO HTML */}
             <div
               className="text-xl"
               dangerouslySetInnerHTML={{ __html: sentence }}
