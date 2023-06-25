@@ -108,13 +108,13 @@
 }
 
 
-.stroke-current-path.dark {
+/* .stroke-current-path.dark {
   stroke: hsl(var(--foreground));
   fill: none;
   stroke-width: 3;
   stroke-linecap: round;
   stroke-linejoin: round;
-}
+} */
 
 .stroke-current-path {
   stroke: hsl(var(--foreground));

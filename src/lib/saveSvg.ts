@@ -31,10 +31,32 @@ function XMLSerialize(svg: any) {
     return XMLSerializerForIE(svg)
   }
 }
-export async function downloadSvg(id: string, filename: string) {
-  var svg = document.getElementById(id)
+export async function downloadSvgAsPng(
+  id: string,
+  filename: string,
+  theme?: string
+) {
+  var strokeBoxCss: string // --border
+  var strokeBoxGuideCss: string // --border
+  var strokeExistingPathCss: string // --muted-foreground
+  var strokeCurrentPathCss: string // --foreground
 
-  var img = document.createElement("img")
+  if (theme) {
+    console.log(theme)
+    if (theme === "dark") {
+      strokeBoxCss = "217.2, 32.6%, 17.5%;"
+      strokeBoxGuideCss = "217.2, 32.6%, 17.5%"
+      strokeExistingPathCss = "215, 20.2%, 65.1%"
+      strokeCurrentPathCss = " 210, 40%, 98%"
+    } else {
+      strokeBoxCss = "0, 0%, 27%"
+      strokeBoxGuideCss = "0, 0%, 27%"
+      strokeExistingPathCss = "215.4, 16.3%, 46.9%"
+      strokeCurrentPathCss = "222.2, 84%, 4.9%"
+    }
+  }
+  var svg = document.getElementById(id)?.cloneNode(true) as SVGElement
+
   var newSvgElement = document.createElementNS(
     "http://www.w3.org/2000/svg",
     "svg"
@@ -48,71 +70,54 @@ export async function downloadSvg(id: string, filename: string) {
 
   const _svg = newSvgElement.childNodes[0] as SVGElement
 
-  // Apply style to elements with class 'stroke-box'
-  const strokeBoxElements = svg.querySelectorAll(
+  if (!_svg) return null
+
+  // Apply styles to the SVG elements here
+  const strokeBoxElements = _svg.querySelectorAll(
     ".stroke-box"
   ) as NodeListOf<SVGLineElement>
   strokeBoxElements.forEach((element) => {
-    element.style.stroke = "hsl(217.2, 32.6%, 17.5%)"
-    element.style.fill = "none"
-    element.style.strokeWidth = "2"
-    element.style.strokeLinecap = "square"
+    element.setAttribute(
+      "style",
+      `stroke: hsl(${strokeBoxCss}); fill: none; stroke-width: 2; stroke-linecap: square;`
+    )
   })
 
-  // Apply style to elements with class 'stroke-box-guide'
-  const strokeBoxGuideElements = svg.querySelectorAll(
+  const strokeBoxGuideElements = _svg.querySelectorAll(
     ".stroke-box-guide"
   ) as NodeListOf<SVGLineElement>
   strokeBoxGuideElements.forEach((element) => {
-    element.style.stroke = "hsl(217.2, 32.6%, 17.5%)"
-    element.style.strokeWidth = "2"
-    element.style.strokeLinecap = "square"
-    element.style.strokeDasharray = "5, 5"
+    element.setAttribute(
+      "style",
+      `stroke: hsl(${strokeBoxGuideCss}); stroke-width: 2; stroke-linecap: square; stroke-dasharray: 5, 5;`
+    )
   })
 
-  // Apply style to elements with class 'stroke-existing-path'
-  const strokeExistingPathElements = svg.querySelectorAll(
+  const strokeExistingPathElements = _svg.querySelectorAll(
     ".stroke-existing-path"
   ) as NodeListOf<SVGPathElement>
   strokeExistingPathElements.forEach((element) => {
-    element.style.stroke = "hsl(215, 20.2%, 65.1%)"
-    element.style.fill = "none"
-    element.style.strokeWidth = "3"
-    element.style.strokeLinecap = "round"
-    element.style.strokeLinejoin = "round"
+    element.setAttribute(
+      "style",
+      `stroke: hsl(${strokeExistingPathCss}); fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;`
+    )
   })
 
-  // Apply style to elements with class 'stroke-current-path.dark'
-  const strokeCurrentPathDarkElements = svg.querySelectorAll(
-    ".stroke-current-path.dark"
-  ) as NodeListOf<SVGPathElement>
-  strokeCurrentPathDarkElements.forEach((element) => {
-    element.style.stroke = "hsl(210, 40%, 98%)"
-    element.style.fill = "none"
-    element.style.strokeWidth = "3"
-    element.style.strokeLinecap = "round"
-    element.style.strokeLinejoin = "round"
-  })
-
-  // Apply style to elements with class 'stroke-current-path'
-  const strokeCurrentPathElements = svg.querySelectorAll(
+  const strokeCurrentPathElements = _svg.querySelectorAll(
     ".stroke-current-path"
   ) as NodeListOf<SVGPathElement>
   strokeCurrentPathElements.forEach((element) => {
-    element.style.stroke = "hsl(210, 40%, 98%)"
-    element.style.fill = "none"
-    element.style.strokeWidth = "3"
-    element.style.strokeLinecap = "round"
-    element.style.strokeLinejoin = "round"
+    element.setAttribute(
+      "style",
+      `stroke: hsl(${strokeCurrentPathCss}); fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;`
+    )
   })
 
-  // Apply style to elements with class 'stroke-path-start'
-  const strokePathStartElements = svg.querySelectorAll(
+  const strokePathStartElements = _svg.querySelectorAll(
     ".stroke-path-start"
   ) as NodeListOf<SVGPathElement>
   strokePathStartElements.forEach((element) => {
-    element.style.fill = "rgba(255, 0, 0, 0.7)"
-    element.style.stroke = "none"
+    element.setAttribute("style", "fill: rgba(255, 0, 0, 0.7); stroke: none;")
   })
 
   var svg_xml = XMLSerialize(_svg)
@@ -131,15 +136,4 @@ export async function downloadSvg(id: string, filename: string) {
   const f = new File([blob], filename + ".png", { type: "image/png" })
 
   return f
-
-  // const pngUrl = URL.createObjectURL(blob)
-
-  // img.src = pngUrl
-
-  // // var saveImg = document.createElement("a")
-  // // saveImg.href = img.src
-  // // saveImg.download = "fle.png"
-  // // saveImg.click()
-
-  // return img
 }

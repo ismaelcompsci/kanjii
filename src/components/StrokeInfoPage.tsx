@@ -2,7 +2,6 @@
 
 import { FC, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { cn } from "@/lib"
 import { useHotkeys } from "@mantine/hooks"
 import { Vocabulary, VocabularyPack } from "@prisma/client"
 import { useInfiniteQuery } from "@tanstack/react-query"
@@ -11,6 +10,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 
 import getKanji from "../actions/getKanji"
 import { VOCABULARY_PAGINATE_NUMBER } from "../config/site"
+import { cn } from "../lib/utils"
 import MainKanji from "./MainKanji"
 import MainKanjiSkeleton from "./skeletons/MainKanjiSkeleton"
 import { Button } from "./ui/Button"

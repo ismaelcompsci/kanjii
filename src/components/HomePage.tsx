@@ -112,7 +112,7 @@ export default function IndexPage() {
           <p className="text-center">{inputText}</p>
         )}
       </div>
-      {showDiagram && inputText !== "" && (
+      {showDiagram && (
         <div className="w-full px-1 lg:items-center">
           <SearchResults inputText={inputText} />
         </div>
