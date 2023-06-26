@@ -14,7 +14,7 @@ import { cn } from "../lib/utils"
 import MainKanji from "./MainKanji"
 import MainKanjiSkeleton from "./skeletons/MainKanjiSkeleton"
 import { Button } from "./ui/Button"
-import { Skeleton } from "./ui/skeleton"
+import { Skeleton } from "./ui/Skeleton"
 
 interface StrokeInfoPageProps {
   pack: VocabularyPack

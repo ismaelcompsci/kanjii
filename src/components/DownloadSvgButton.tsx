@@ -1,6 +1,6 @@
-import { FC } from "react"
+import { FC, useState } from "react"
 import JSZip from "jszip"
-import { Download } from "lucide-react"
+import { Download, Loader, Loader2 } from "lucide-react"
 import { useTheme } from "next-themes"
 
 import { downloadSvgAsPng } from "../lib/saveSvg"
@@ -14,32 +14,31 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/DropdownMenu"
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select"
 
 interface DownloadSvgButtonProps {
   text: string
 }
 
 const DownloadSvgButton: FC<DownloadSvgButtonProps> = ({ text }) => {
-  // TODO : ADD LOADING
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
   const { theme } = useTheme()
 
-  const handleDownload = async () => {
+  const handleDownload = async (type: string) => {
+    setIsLoading(true)
     const zip = new JSZip()
 
     for (const char of text) {
-      const f = await downloadSvgAsPng(char, char, theme)
+      const f = await downloadSvgAsPng(char, char, type, theme)
 
       if (!f) {
         return null
+      }
+
+      if (type === "SVG") {
+        zip.file(char + ".svg", f)
+
+        continue
       }
 
       zip.file(char + ".png", f)
@@ -54,6 +53,7 @@ const DownloadSvgButton: FC<DownloadSvgButtonProps> = ({ text }) => {
           downloadLink.download = text + ".zip"
 
           downloadLink.click()
+          setIsLoading(false)
         })
         .catch((error) => {
           console.error("Error generating zip file:", error)
@@ -63,8 +63,12 @@ const DownloadSvgButton: FC<DownloadSvgButtonProps> = ({ text }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button onClick={() => {}} variant={"destructive"}>
-          <Download className="w-6 h-6 pr-1" />
+        <Button
+          variant={"destructive"}
+          isLoading={isLoading}
+          className="items-center"
+        >
+          {!isLoading && <Download className="w-5 h-5 pr-1" />}
           Download All
         </Button>
       </DropdownMenuTrigger>
@@ -72,10 +76,18 @@ const DownloadSvgButton: FC<DownloadSvgButtonProps> = ({ text }) => {
         <DropdownMenuLabel>Export as</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup>
-          <DropdownMenuRadioItem onClick={handleDownload} value="PNG">
+          <DropdownMenuRadioItem
+            onClick={() => handleDownload("PNG")}
+            value="PNG"
+          >
             PNG
           </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="SVG">SVG</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem
+            onClick={() => handleDownload("SVG")}
+            value="SVG"
+          >
+            SVG
+          </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>

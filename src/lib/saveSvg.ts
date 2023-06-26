@@ -34,6 +34,7 @@ function XMLSerialize(svg: any) {
 export async function downloadSvgAsPng(
   id: string,
   filename: string,
+  type: string,
   theme?: string
 ) {
   var strokeBoxCss: string // --border
@@ -121,6 +122,16 @@ export async function downloadSvgAsPng(
   })
 
   var svg_xml = XMLSerialize(_svg)
+
+  if (type === "SVG") {
+    var svgBlob = new Blob([svg_xml], { type: "image/svg+xml;charset=utf-8" })
+
+    const f = new File([svgBlob], filename + ".svg", {
+      type: "image/svg+xml;charset=utf-8",
+    })
+
+    return f
+  }
 
   var canvas = new OffscreenCanvas(400, 400)
   var ctx = canvas.getContext("2d") as RenderingContext2D
