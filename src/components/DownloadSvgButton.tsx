@@ -1,6 +1,6 @@
 import { FC, useState } from "react"
 import JSZip from "jszip"
-import { Download, Loader, Loader2 } from "lucide-react"
+import { Download } from "lucide-react"
 import { useTheme } from "next-themes"
 
 import { downloadSvgAsPng } from "../lib/saveSvg"

@@ -1,8 +1,5 @@
-import { FC } from "react"
-import { Vocabulary } from "@prisma/client"
-
+import DownloadSvgButton from "./DownloadSvgButton"
 import StrokeGraph from "./StrokeGraph"
-import { Button } from "./ui/Button"
 
 interface MainKanjiProps {
   word: string
@@ -54,11 +51,14 @@ const MainKanji = ({
       </div>
       <div className="w-auto pl-[0.9375rem] pr-[0.9375rem]">
         <div className="w-full relative float-left">
-          <h2>Stroke Order</h2>
+          <div className="flex justify-between w-full">
+            <h2>Stroke Order</h2>
+            <DownloadSvgButton text={word} />
+          </div>
           {word.split("").map((k, index) => (
             <div key={index}>
               <h3>{k}</h3>
-              <StrokeGraph kanji={k} word={word} />
+              <StrokeGraph kanji={k} />
             </div>
           ))}
         </div>

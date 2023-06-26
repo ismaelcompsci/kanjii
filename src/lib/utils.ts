@@ -1,11 +1,7 @@
-import { Canvg, RenderingContext2D, presets } from "canvg"
 import { ClassValue, clsx } from "clsx"
 import { formatDistanceToNowStrict } from "date-fns"
 import locale from "date-fns/locale/en-US"
-import { useTheme } from "next-themes"
 import { twMerge } from "tailwind-merge"
-
-import toDataURL from "./index.js"
 
 // Regular expression unicode blocks collected from
 // http://www.localizingjapan.com/blog/2012/01/20/regular-expressions-for-japanese-text/

@@ -12,7 +12,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "./ui/card"
+} from "./ui/Card"
 
 interface StudyPackCardProps {
   pack: VocabularyPack & {

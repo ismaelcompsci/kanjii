@@ -1,16 +1,17 @@
 "use client"
 
-import { FC, useEffect, useState } from "react"
+import { FC, startTransition, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useHotkeys } from "@mantine/hooks"
 import { Vocabulary, VocabularyPack } from "@prisma/client"
-import { useInfiniteQuery } from "@tanstack/react-query"
+import { useInfiniteQuery, useMutation } from "@tanstack/react-query"
 import axios from "axios"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
 import getKanji from "../actions/getKanji"
 import { VOCABULARY_PAGINATE_NUMBER } from "../config/site"
 import { cn } from "../lib/utils"
+import { CreateUpdateValidatorPayload } from "../lib/validators/updatePageValidator"
 import MainKanji from "./MainKanji"
 import MainKanjiSkeleton from "./skeletons/MainKanjiSkeleton"
 import { Button } from "./ui/Button"
@@ -56,20 +57,22 @@ const StrokeInfoPage: FC<StrokeInfoPageProps> = ({
 
     async ({ pageParam = initialPage }) => {
       const query = `/api/vocabulary?limit=${VOCABULARY_PAGINATE_NUMBER}&page=${pageParam}&vocabularyPackId=${pack.id}`
-
       const { data } = await getKanji({ query, page: pageParam })
 
       return { page: pageParam, data: data } as kanjiData
     },
     {
-      getNextPageParam: (_, pages) => {
-        return pages.length + 1
+      getNextPageParam: (lastPage) => {
+        if (lastPage.page + 1 >= 300) {
+          return undefined // No more next pages available
+        }
+        return lastPage.page + 1 // Increment the page number for the next page
       },
       getPreviousPageParam: (firstPage) => {
         if (firstPage.page <= 0) {
-          return undefined
+          return undefined // No more previous pages available
         }
-        return firstPage.page - 1
+        return firstPage.page - 1 // Decrement the page number for the previous page
       },
     }
   )
@@ -78,7 +81,6 @@ const StrokeInfoPage: FC<StrokeInfoPageProps> = ({
 
   useEffect(() => {
     if (vocabulary && currentKIndex < vocabulary.length) {
-      console.log(currentKIndex, selectedButton)
       setCurrentWord(vocabulary[currentKIndex].data[selectedButton])
       setCurrentPage(vocabulary[currentKIndex].page)
     }
@@ -120,6 +122,29 @@ const StrokeInfoPage: FC<StrokeInfoPageProps> = ({
       setSelectedButton(4)
     }
   }
+
+  const { mutate: updateUserPage } = useMutation({
+    mutationFn: async () => {
+      const payload: CreateUpdateValidatorPayload = {
+        page: currentPage || 0,
+        packId: pack.id,
+      }
+
+      const { data } = await axios.put(`/api/user/${pack.name}/page`, payload)
+
+      console.log(data)
+      return data
+    },
+    onSuccess: () => {
+      startTransition(() => {
+        router.refresh()
+      })
+    },
+  })
+
+  useEffect(() => {
+    updateUserPage()
+  }, [currentPage, pack.id, router])
 
   useHotkeys([
     ["ArrowLeft", () => handlePrev()],

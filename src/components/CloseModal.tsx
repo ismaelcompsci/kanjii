@@ -1,6 +1,5 @@
 "use client"
 
-import { FC } from "react"
 import { useRouter } from "next/navigation"
 import { X } from "lucide-react"
 
