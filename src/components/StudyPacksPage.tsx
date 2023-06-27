@@ -2,7 +2,7 @@
 
 import { FC, useEffect, useRef } from "react"
 import { useIntersection } from "@mantine/hooks"
-import { Like, VocabularyPack } from "@prisma/client"
+import { Like, SeenVocabularyPack, VocabularyPack } from "@prisma/client"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import axios from "axios"
 import { useSession } from "next-auth/react"
@@ -20,9 +20,13 @@ export interface ExtendedStudyPack extends VocabularyPack {
 
 interface StudyPacksPageProps {
   initialPacks: ExtendedStudyPack[]
+  userSeenPacks: SeenVocabularyPack[] | null
 }
 
-const StudyPacksFeed: FC<StudyPacksPageProps> = ({ initialPacks }) => {
+const StudyPacksFeed: FC<StudyPacksPageProps> = ({
+  initialPacks,
+  userSeenPacks,
+}) => {
   const lastPostRef = useRef<HTMLElement>(null)
   const { data: session } = useSession()
 
@@ -63,8 +67,17 @@ const StudyPacksFeed: FC<StudyPacksPageProps> = ({ initialPacks }) => {
           (like) => like.userId === session?.user.id
         )
 
+        const seenPack = userSeenPacks?.find(
+          (seenPack) => seenPack.vocabularyPackId === pack.id
+        )
+
         return (
-          <StudyPackCard key={pack.id} pack={pack} currentVote={currentVote} />
+          <StudyPackCard
+            key={pack.id}
+            pack={pack}
+            currentVote={currentVote}
+            seenPack={seenPack}
+          />
         )
       })}
     </div>

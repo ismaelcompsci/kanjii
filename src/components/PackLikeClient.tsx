@@ -20,6 +20,7 @@ interface LikingMutation {
   vocabularyPackId: string
 }
 
+// TODO: DONT ALLOW UNAUTH USERS FROM  CLICKING LIKE
 const PackLikeClient: FC<PackLikeClientProps> = ({ currentVote, pack }) => {
   const [liked, setLiked] = useState<boolean>(currentVote ? true : false)
   const [voteAmt, setVoteAmt] = useState<number>(pack.likes.length)
@@ -76,11 +77,11 @@ const PackLikeClient: FC<PackLikeClientProps> = ({ currentVote, pack }) => {
     <div className="flex items-center">
       {liked ? (
         <span onClick={() => like({ vocabularyPackId: pack.id })}>
-          <Star className="mr-1 h-4 w-4 cursor-pointer fill-sky-400 text-sky-400" />
+          <Star className="mr-1 h-3 w-3 cursor-pointer fill-sky-400 text-sky-400" />
         </span>
       ) : (
         <span onClick={() => like({ vocabularyPackId: pack.id })}>
-          <Star className="mr-1 h-4 w-4 cursor-pointer" />
+          <Star className="mr-1 h-3 w-3 cursor-pointer" />
         </span>
       )}
 

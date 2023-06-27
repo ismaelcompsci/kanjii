@@ -1,6 +1,6 @@
 import { FC } from "react"
 import { useRouter } from "next/navigation"
-import { Like, VocabularyPack } from "@prisma/client"
+import { Like, SeenVocabularyPack, VocabularyPack } from "@prisma/client"
 import { Circle } from "lucide-react"
 
 import { formatTimeToNow } from "../lib/utils"
@@ -24,9 +24,14 @@ interface StudyPackCardProps {
     likes: Like[]
   }
   currentVote: Like | undefined
+  seenPack: SeenVocabularyPack | undefined
 }
 //  TODO: add likes
-const StudyPackCard: FC<StudyPackCardProps> = ({ pack, currentVote }) => {
+const StudyPackCard: FC<StudyPackCardProps> = ({
+  pack,
+  currentVote,
+  seenPack,
+}) => {
   const router = useRouter()
 
   return (
@@ -50,18 +55,23 @@ const StudyPackCard: FC<StudyPackCardProps> = ({ pack, currentVote }) => {
             className="px-3"
             onClick={() => router.push(`/study/${pack.name}`)}
           >
-            <span>Start</span>
+            {seenPack ? <span>Continue</span> : <span>Start</span>}
           </Button>
         </div>
       </CardHeader>
       <CardContent>
-        <div className="flex space-x-4 text-sm text-muted-foreground">
+        <div className="flex flex-row space-x-4 text-sm text-muted-foreground w-full">
           <div className="flex items-center">
-            <Circle className="mr-1 h-3 w-3 fill-sky-400 " />
+            <Circle className="mr-1 h-3 w-3 fill-sky-400 text-sky-400" />
             <div>{formatTimeToNow(new Date(pack.createdAt))}</div>
           </div>
           {/* Like */}
           <PackLikeClient currentVote={currentVote} pack={pack} />
+          {seenPack && (
+            <span>{`${seenPack?.currentPage}/${Math.ceil(
+              pack.vocabularyCount / 5
+            )}`}</span>
+          )}
         </div>
       </CardContent>
     </Card>
