@@ -12,20 +12,20 @@ const MainKanjiSkeleton = () => {
             <Skeleton className="h-4 w-20" />
           </div>
           <div className="">
-            <div className="font-extralight">reading</div>
+            <div className="font-extralight"></div>
             <Skeleton className="h-4 w-20" />
           </div>
 
           <div>
-            <div className="font-extralight">meaning</div>
+            <div className="font-extralight"></div>
             <Skeleton className="h-4 w-20" />
           </div>
           <div>
-            <div className="font-extralight">sentence</div>
+            <div className="font-extralight"></div>
             <Skeleton className="h-4 w-32" />
           </div>
           <div className="md:col-start-2">
-            <div className="font-extralight">english sentence</div>
+            <div className="font-extralight"></div>
             <Skeleton className="h-4 w-32" />
           </div>
         </div>

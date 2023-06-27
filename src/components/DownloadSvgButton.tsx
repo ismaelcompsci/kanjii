@@ -64,9 +64,9 @@ const DownloadSvgButton: FC<DownloadSvgButtonProps> = ({ text }) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          variant={"destructive"}
           isLoading={isLoading}
           className="items-center"
+          variant={"outline"}
         >
           {!isLoading && <Download className="w-5 h-5 pr-1" />}
           Download All

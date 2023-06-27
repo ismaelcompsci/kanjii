@@ -5,6 +5,7 @@ import { useIntersection } from "@mantine/hooks"
 import { Like, VocabularyPack } from "@prisma/client"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import axios from "axios"
+import { useSession } from "next-auth/react"
 
 import { STUDY_PACK_PAGINATE_NUMBER } from "../config/site"
 import StudyPackCard from "./StudyPackCard"
@@ -15,11 +16,6 @@ export interface ExtendedStudyPack extends VocabularyPack {
     image: string | null
   }
   likes: Like[]
-  _count: {
-    vocabulary: number
-    SeenVocabularyPack: number
-    likes: number
-  }
 }
 
 interface StudyPacksPageProps {
@@ -28,6 +24,7 @@ interface StudyPacksPageProps {
 
 const StudyPacksFeed: FC<StudyPacksPageProps> = ({ initialPacks }) => {
   const lastPostRef = useRef<HTMLElement>(null)
+  const { data: session } = useSession()
 
   const { ref, entry } = useIntersection({
     root: lastPostRef.current,
@@ -61,8 +58,14 @@ const StudyPacksFeed: FC<StudyPacksPageProps> = ({ initialPacks }) => {
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8 gap-4 mt-4 mx-4">
-      {packs?.map((pack) => {
-        return <StudyPackCard key={pack.id} pack={pack} />
+      {packs?.map((pack: ExtendedStudyPack) => {
+        const currentVote = pack.likes.find(
+          (like) => like.userId === session?.user.id
+        )
+
+        return (
+          <StudyPackCard key={pack.id} pack={pack} currentVote={currentVote} />
+        )
       })}
     </div>
   )

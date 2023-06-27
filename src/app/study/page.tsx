@@ -15,7 +15,6 @@ const Page = async () => {
         },
       },
       likes: true,
-      _count: true,
     },
     take: STUDY_PACK_PAGINATE_NUMBER,
   })

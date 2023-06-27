@@ -1,9 +1,10 @@
 import { FC } from "react"
 import { useRouter } from "next/navigation"
 import { Like, VocabularyPack } from "@prisma/client"
-import { Circle, Star } from "lucide-react"
+import { Circle } from "lucide-react"
 
 import { formatTimeToNow } from "../lib/utils"
+import PackLikeClient from "./PackLikeClient"
 import { UserAvatar } from "./UserAvatar"
 import { Button } from "./ui/Button"
 import {
@@ -21,15 +22,11 @@ interface StudyPackCardProps {
       image: string | null
     }
     likes: Like[]
-    _count: {
-      vocabulary: number
-      SeenVocabularyPack: number
-      likes: number
-    }
   }
+  currentVote: Like | undefined
 }
 //  TODO: add likes
-const StudyPackCard: FC<StudyPackCardProps> = ({ pack }) => {
+const StudyPackCard: FC<StudyPackCardProps> = ({ pack, currentVote }) => {
   const router = useRouter()
 
   return (
@@ -60,15 +57,11 @@ const StudyPackCard: FC<StudyPackCardProps> = ({ pack }) => {
       <CardContent>
         <div className="flex space-x-4 text-sm text-muted-foreground">
           <div className="flex items-center">
-            <Circle className="mr-1 h-3 w-3 fill-sky-400 text-sky-400" />
+            <Circle className="mr-1 h-3 w-3 fill-sky-400 " />
             <div>{formatTimeToNow(new Date(pack.createdAt))}</div>
           </div>
-
-          <div className="flex items-center">
-            {/* TODO: MAKE A PACK POSTVOTECLIENT */}
-            <Star className="mr-1 h-3 w-3 cursor-pointer" />
-            {pack.likes.length}
-          </div>
+          {/* Like */}
+          <PackLikeClient currentVote={currentVote} pack={pack} />
         </div>
       </CardContent>
     </Card>

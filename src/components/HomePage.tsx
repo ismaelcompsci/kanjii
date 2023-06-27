@@ -12,13 +12,16 @@ const SearchResults = memo(({ inputText }: { inputText: string }) => {
   return (
     <div className="w-full relative float-left">
       <div className="flex justify-between w-full">
-        <h2>Stroke Order</h2>
-        <img id="kimage"></img>
+        <h2 className="text-2xl">Stroke Order</h2>
         <DownloadSvgButton text={inputText} />
       </div>
       {inputText.split("").map((k, index) => (
         <div key={index} id={`${k}-${index}`}>
-          <h3 className="left-0">{k}</h3>
+          <h3 className="text-xl underline underline-offset-2 decoration-sky-500 hover:underline-offset-4 hover:text-sky-900 w-fit">
+            <a href={`https://jisho.org/search/${k}`} target="_blank">
+              {k}
+            </a>
+          </h3>
           <StrokeGraph kanji={k} />
         </div>
       ))}
@@ -49,6 +52,7 @@ export default function IndexPage() {
 
   const handleClick = (text: string) => {
     setInputText(text)
+    setShowDesc(false)
     generate()
   }
   const handleKeyDown = (e: KeyboardEvent) => {

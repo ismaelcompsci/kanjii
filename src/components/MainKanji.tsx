@@ -57,7 +57,9 @@ const MainKanji = ({
           </div>
           {word.split("").map((k, index) => (
             <div key={index}>
-              <h3>{k}</h3>
+              <h3>
+                <a href={`https://jisho.org/search/${k}`}>{k}</a>
+              </h3>
               <StrokeGraph kanji={k} />
             </div>
           ))}
