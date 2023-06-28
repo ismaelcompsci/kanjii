@@ -52,7 +52,7 @@ export default function IndexPage() {
 
   const handleClick = (text: string) => {
     setInputText(text)
-    setShowDesc(false)
+    // setShowDesc(false)
     generate()
   }
   const handleKeyDown = (e: KeyboardEvent) => {
@@ -94,7 +94,7 @@ export default function IndexPage() {
               Once you submit your input we generate a detailed stroke order
               diagram.
             </p>
-            <ul className="list-disc">
+            <ul className="list-disc mx-4">
               <li className="text-sm">
                 Example :{" "}
                 <Underline
@@ -118,7 +118,7 @@ export default function IndexPage() {
       </div>
       {showDiagram && (
         <div className="w-full px-1 lg:items-center">
-          <SearchResults inputText={inputText} />
+          <SearchResults key={inputText} inputText={inputText} />
         </div>
       )}
     </>

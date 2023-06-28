@@ -1,6 +1,8 @@
 import { FC, useState } from "react"
+import { useRouter } from "next/navigation"
 import JSZip from "jszip"
 import { Download } from "lucide-react"
+import { useSession } from "next-auth/react"
 import { useTheme } from "next-themes"
 
 import { downloadSvgAsPng } from "../lib/saveSvg"
@@ -22,9 +24,16 @@ interface DownloadSvgButtonProps {
 const DownloadSvgButton: FC<DownloadSvgButtonProps> = ({ text }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
+  const { data: session } = useSession()
   const { theme } = useTheme()
 
+  const router = useRouter()
+
   const handleDownload = async (type: string) => {
+    if (!session) {
+      return router.push("/sign-in")
+    }
+
     setIsLoading(true)
     const zip = new JSZip()
 

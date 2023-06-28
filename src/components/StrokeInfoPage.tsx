@@ -4,7 +4,11 @@ import { FC, startTransition, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useHotkeys } from "@mantine/hooks"
 import { Vocabulary, VocabularyPack } from "@prisma/client"
-import { useInfiniteQuery, useMutation } from "@tanstack/react-query"
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query"
 import axios from "axios"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
@@ -27,21 +31,20 @@ type kanjiData = {
   data: any
 }
 
-// session?:
-// | (User & { id: string; username?: string | null | undefined })
-// | undefined
-
 const StrokeInfoPage: FC<StrokeInfoPageProps> = ({
   pack,
   currentPage: initialPage,
 }) => {
   const router = useRouter()
 
-  const [currentKIndex, setCurrentKIndex] = useState(0)
-  const [currentWord, setCurrentWord] = useState<Vocabulary | null>(null)
-  const [selectedButton, setSelectedButton] = useState(0)
+  const queryClient = useQueryClient()
 
-  const [currentPage, setCurrentPage] = useState(initialPage)
+  const [currentKIndex, setCurrentKIndex] = useState<number>(0)
+  const [currentWord, setCurrentWord] = useState<Vocabulary | null>(null)
+  const [selectedButton, setSelectedButton] = useState<number>(0)
+
+  const [currentPage, setCurrentPage] = useState<number>(initialPage || 0)
+  const [fetchedPages, setFetchedPages] = useState<number[]>([initialPage || 0])
 
   const {
     isSuccess,
@@ -63,21 +66,38 @@ const StrokeInfoPage: FC<StrokeInfoPageProps> = ({
     },
     {
       getNextPageParam: (lastPage) => {
-        if (lastPage.page + 1 >= 300) {
-          return undefined // No more next pages available
+        // TODO: check end of pagination behavior
+        if (lastPage.page >= Math.ceil(pack.vocabularyCount / 5)) {
+          console.log("lastPage")
+          return undefined
         }
-        return lastPage.page + 1 // Increment the page number for the next page
+        return lastPage.page + 1
       },
       getPreviousPageParam: (firstPage) => {
         if (firstPage.page <= 0) {
-          return undefined // No more previous pages available
+          return undefined
         }
-        return firstPage.page - 1 // Decrement the page number for the previous page
+        return firstPage.page - 1
       },
     }
   )
 
   const vocabulary = data?.pages.sort((a, b) => a.page - b.page)
+
+  // Prefetch next page on 3rd button
+  useEffect(() => {
+    if (selectedButton === 3 && hasNextPage) {
+      const f = fetchedPages.find((page) => page === currentPage + 1)
+      if (f) return
+
+      const nextPage = currentPage + 1
+      queryClient.prefetchInfiniteQuery(
+        ["infinite-vocab-pack", { pageParam: nextPage }],
+        () => fetchNextPage({ pageParam: nextPage })
+      )
+      setFetchedPages((prev) => [...prev, nextPage])
+    }
+  }, [selectedButton])
 
   useEffect(() => {
     if (vocabulary && currentKIndex < vocabulary.length) {
@@ -154,14 +174,13 @@ const StrokeInfoPage: FC<StrokeInfoPageProps> = ({
   return (
     <div>
       <div className="w-full flex items-center justify-center gap-2 pt-2">
-        {isSuccess && !isFetchingNextPage && (
+        {isSuccess && (
           <ChevronLeft
             onClick={handlePrev}
             className="hover:text-slate-500 duration-300 hover:scale-125 transition ease-in-out delay-150 cursor-pointer transform"
           />
         )}
         {isSuccess &&
-          !isFetchingNextPage &&
           vocabulary?.[currentKIndex]?.data?.map(
             (vocab: Vocabulary, index: number) => (
               <Button
@@ -180,14 +199,14 @@ const StrokeInfoPage: FC<StrokeInfoPageProps> = ({
             )
           )}
 
-        {isSuccess && !isFetchingNextPage && (
+        {isSuccess && (
           <ChevronRight
             onClick={handleNext}
             className="hover:text-slate-500 duration-300 hover:scale-125  transition ease-in-out delay-150 cursor-pointer transform"
           />
         )}
       </div>
-      {currentWord && !isFetchingNextPage && (
+      {currentWord && (
         <MainKanji
           key={currentWord.id}
           word={currentWord.word}

@@ -1,6 +1,7 @@
 import Link from "next/link"
 
 import { getAuthSession } from "../lib/auth"
+import { cn } from "../lib/utils"
 import { ThemeToggle } from "./ThemeToggle"
 import UserAccountNav from "./UserAccountNav"
 import { buttonVariants } from "./ui/Button"
@@ -15,7 +16,7 @@ export async function MainNav() {
       {session?.user ? (
         <UserAccountNav user={session.user} />
       ) : (
-        <Link href="/sign-in" className={buttonVariants()}>
+        <Link href="/sign-in" className={cn(buttonVariants({ size: "sm" }))}>
           Sign In
         </Link>
       )}
