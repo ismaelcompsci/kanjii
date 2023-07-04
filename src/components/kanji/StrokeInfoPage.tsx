@@ -46,7 +46,7 @@ const StrokeInfoPage: FC<StrokeInfoPageProps> = ({
   const [currentPage, setCurrentPage] = useState<number>(initialPage || 0)
   const [fetchedPages, setFetchedPages] = useState<number[]>([initialPage || 0])
   const [done, setDone] = useState<number>(0)
-
+  const [authorized, setAuthorized] = useState<boolean>(true)
   const [finished, setFinished] = useState<boolean>(false)
 
   const {
@@ -165,9 +165,14 @@ const StrokeInfoPage: FC<StrokeInfoPageProps> = ({
         packId: pack.id,
       }
 
-      const { data } = await axios.put(`/api/user/${pack.name}/page`, payload)
-
-      return data
+      try {
+        const { data } = await axios.put(`/api/user/${pack.name}/page`, payload)
+        return data
+      } catch (err: any) {
+        if (err.response.status === 401) {
+          setAuthorized(false)
+        }
+      }
     },
     onSuccess: () => {
       startTransition(() => {
@@ -177,7 +182,11 @@ const StrokeInfoPage: FC<StrokeInfoPageProps> = ({
   })
 
   useEffect(() => {
-    updateUserPage()
+    if (!authorized) {
+      return
+    }
+    const data = updateUserPage()
+    console.log("dtat", data)
     if (currentPage === 1) {
       const payload = {
         packId: pack.id,
