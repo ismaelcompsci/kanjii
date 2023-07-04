@@ -1,18 +1,19 @@
 "use client"
 
 import { FC, useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import { Like } from "@prisma/client"
 import { useMutation } from "@tanstack/react-query"
 import axios, { AxiosError } from "axios"
-import { Star } from "lucide-react"
+import { Loader2, Star } from "lucide-react"
 
-import { useCustomToasts } from "../hooks/use-custom-toasts"
 import { toast } from "../hooks/use-toast"
+import { cn } from "../lib/utils"
 import { LikingValidatorPayload } from "../lib/validators/LikingValidator"
 import { ExtendedStudyPack } from "./StudyPacksPage"
 
 interface PackLikeClientProps {
-  currentVote: Like | undefined
+  currentLike: Like | undefined
   pack: ExtendedStudyPack
 }
 
@@ -20,19 +21,17 @@ interface LikingMutation {
   vocabularyPackId: string
 }
 
-// TODO: DONT ALLOW UNAUTH USERS FROM  CLICKING LIKE
-const PackLikeClient: FC<PackLikeClientProps> = ({ currentVote, pack }) => {
-  const [liked, setLiked] = useState<boolean>(currentVote ? true : false)
+const PackLikeClient: FC<PackLikeClientProps> = ({ currentLike, pack }) => {
+  const [liked, setLiked] = useState<boolean>(currentLike ? true : false)
   const [voteAmt, setVoteAmt] = useState<number>(pack.likes.length)
-
-  const { loginToast } = useCustomToasts()
+  const router = useRouter()
 
   // ensure sync with server
   useEffect(() => {
-    setLiked(currentVote ? true : false)
-  }, [currentVote])
+    setLiked(currentLike ? true : false)
+  }, [currentLike])
 
-  const { mutate: like } = useMutation({
+  const { mutate: like, isLoading } = useMutation({
     mutationFn: async ({ vocabularyPackId }: LikingMutation) => {
       const payload: LikingValidatorPayload = {
         vocabularyPackId,
@@ -52,7 +51,7 @@ const PackLikeClient: FC<PackLikeClientProps> = ({ currentVote, pack }) => {
 
       if (err instanceof AxiosError) {
         if (err.response?.status === 401) {
-          return loginToast()
+          router.push("/sign-in")
         }
       }
 
@@ -71,18 +70,28 @@ const PackLikeClient: FC<PackLikeClientProps> = ({ currentVote, pack }) => {
 
       setLiked((prev) => !prev)
     },
+    onSuccess: () => {
+      router.refresh()
+    },
   })
 
   return (
     <div className="flex items-center">
-      {liked ? (
-        <span onClick={() => like({ vocabularyPackId: pack.id })}>
-          <Star className="mr-1 h-3 w-3 cursor-pointer fill-sky-400 text-sky-400" />
+      {!isLoading ? (
+        <span
+          onClick={() => {
+            like({ vocabularyPackId: pack.id })
+          }}
+        >
+          <Star
+            className={cn(
+              "mr-1 h-3 w-3 cursor-pointer",
+              liked && "fill-sky-400 text-sky-400"
+            )}
+          />
         </span>
       ) : (
-        <span onClick={() => like({ vocabularyPackId: pack.id })}>
-          <Star className="mr-1 h-3 w-3 cursor-pointer" />
-        </span>
+        <Loader2 className="mr-1 h-4 w-4 animate-spin" />
       )}
 
       {voteAmt}

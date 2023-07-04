@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation"
 import { X } from "lucide-react"
 
-import { Button } from "./ui/Button"
+import { Button } from "../ui/Button"
 
 const CloseModal = () => {
   const router = useRouter()
@@ -11,7 +11,7 @@ const CloseModal = () => {
   return (
     <Button
       variant="ghost"
-      className="h-6 w-6 p-0 rounded-md"
+      className="h-6 w-6 rounded-md p-0"
       onClick={() => router.back()}
     >
       <X aria-label="close modal" className="h-4 w-4" />

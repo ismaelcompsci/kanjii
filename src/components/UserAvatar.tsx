@@ -6,12 +6,12 @@ import { Icons } from "./Icons"
 import { Avatar, AvatarFallback } from "./ui/Avatar"
 
 interface UserAvatarProps extends AvatarProps {
-  user: Pick<User, "image" | "name">
+  user: Pick<User, "image" | "username" | "name">
 }
 
 export function UserAvatar({ user, ...props }: UserAvatarProps) {
   return (
-    <Avatar {...props}>
+    <Avatar {...props} className="mr-1">
       {user.image ? (
         <div className="relative aspect-square h-full w-full">
           <Image
@@ -23,7 +23,7 @@ export function UserAvatar({ user, ...props }: UserAvatarProps) {
         </div>
       ) : (
         <AvatarFallback>
-          <span className="sr-only">{user?.name}</span>
+          <span className="sr-only">{user.username ?? user.name}</span>
           <Icons.user className="h-4 w-4" />
         </AvatarFallback>
       )}

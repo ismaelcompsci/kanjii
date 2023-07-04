@@ -1,7 +1,7 @@
 import { MutableRefObject, useEffect } from "react"
 import { useTheme } from "next-themes"
 import type { Element, Fragment, Paper } from "snapsvg"
-// @ts-ignore TODO
+// @ts-ignore
 import Snap from "snapsvg-cjs-ssr-safe"
 
 function createStrokeOrderDiagram(

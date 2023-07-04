@@ -43,7 +43,6 @@ export async function downloadSvgAsPng(
   var strokeCurrentPathCss: string // --foreground
 
   if (theme) {
-    console.log(theme)
     if (theme === "dark") {
       strokeBoxCss = "217.2, 32.6%, 17.5%;"
       strokeBoxGuideCss = "217.2, 32.6%, 17.5%"

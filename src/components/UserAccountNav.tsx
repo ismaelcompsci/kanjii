@@ -2,6 +2,7 @@
 
 import { FC } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { LogOut, Settings } from "lucide-react"
 import { User } from "next-auth"
 import { signOut } from "next-auth/react"
@@ -21,13 +22,17 @@ interface UserAccountNavProps {
 }
 
 const UserAccountNav: FC<UserAccountNavProps> = ({ user }) => {
-  // const router = use
+  const router = useRouter()
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
         <UserAvatar
-          user={{ name: user.name || null, image: user.image || null }}
+          user={{
+            name: user.name || null,
+            image: user.image || null,
+            username: null,
+          }}
           className="h-8 w-8"
         />
       </DropdownMenuTrigger>
@@ -46,14 +51,28 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user }) => {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem>
-          <Icons.user className="mr-2 h-4 w-4" />
-          <Link href="/profile">Profile</Link>
+        <DropdownMenuItem
+          className="hover:cursor-pointer"
+          onClick={() => router.push("/dashboard")}
+        >
+          <Icons.like className="mr-2 h-4 w-4" />
+          <Link href="/dashboard/likes">Likes</Link>
         </DropdownMenuItem>
 
-        <DropdownMenuItem>
+        <DropdownMenuItem
+          className="hover:cursor-pointer"
+          onClick={() => router.push("/dashboard/billing")}
+        >
+          <Icons.billing className="mr-2 h-4 w-4" />
+          <Link href="/dashboard/billing">Billing</Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem
+          className="hover:cursor-pointer"
+          onClick={() => router.push("/dashboard/settings")}
+        >
           <Settings className="mr-2 h-4 w-4" />
-          <Link href="/settings">Settings</Link>
+          <Link href="/dashboard/settings">Settings</Link>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />

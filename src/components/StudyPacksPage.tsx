@@ -12,8 +12,9 @@ import StudyPackCard from "./StudyPackCard"
 
 export interface ExtendedStudyPack extends VocabularyPack {
   creator: {
-    name: string | null
+    username: string | null
     image: string | null
+    name: string | null
   }
   likes: Like[]
 }
@@ -23,6 +24,7 @@ interface StudyPacksPageProps {
   userSeenPacks: SeenVocabularyPack[] | null
 }
 
+// TODO : fix infinite query
 const StudyPacksFeed: FC<StudyPacksPageProps> = ({
   initialPacks,
   userSeenPacks,
@@ -61,9 +63,9 @@ const StudyPacksFeed: FC<StudyPacksPageProps> = ({
   const packs = data?.pages.flatMap((page) => page) ?? initialPacks
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8 gap-4 mt-4 mx-4">
+    <div className="mx-4 mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8">
       {packs?.map((pack: ExtendedStudyPack) => {
-        const currentVote = pack.likes.find(
+        const currentLike = pack.likes.find(
           (like) => like.userId === session?.user.id
         )
 
@@ -75,7 +77,7 @@ const StudyPacksFeed: FC<StudyPacksPageProps> = ({
           <StudyPackCard
             key={pack.id}
             pack={pack}
-            currentVote={currentVote}
+            currentLike={currentLike}
             seenPack={seenPack}
           />
         )

@@ -1,10 +1,10 @@
 import "./globals.css"
 import { Metadata } from "next"
 
-import { Nav } from "../components/Nav"
 import Providers from "../components/Providers"
 import { TailwindIndicator } from "../components/TailwindIndicator"
 import { ThemeProvider } from "../components/ThemeProvider"
+import { Nav } from "../components/navigation/Nav"
 import { siteConfig } from "../config/site"
 import { fontSans } from "../lib/fonts"
 import { cn } from "../lib/utils"

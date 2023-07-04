@@ -3,12 +3,12 @@ import { Skeleton } from "../ui/Skeleton"
 const MainKanjiSkeleton = () => {
   return (
     <div className="container h-screen p-2">
-      <div className="p-1 flex flex-col md:flex-row">
-        <div className="h-[100px] md:h-[200px] md:w-[250px] text-center justify-center ">
+      <div className="flex flex-col p-1 md:flex-row">
+        <div className="h-[100px] justify-center text-center md:h-[200px] md:w-[250px] ">
           <Skeleton className="h-full w-full" />
         </div>
-        <div className="container grid grid-cols-1 md:grid-cols-[50%_50%] gap-8 ">
-          <div className="col-span-full h-10 font-semibold border-b flex justify-center items-center">
+        <div className="container grid grid-cols-1 gap-8 md:grid-cols-[50%_50%] ">
+          <div className="col-span-full flex h-10 items-center justify-center border-b font-semibold">
             <Skeleton className="h-4 w-20" />
           </div>
           <div className="">
@@ -31,10 +31,10 @@ const MainKanjiSkeleton = () => {
         </div>
       </div>
       <div className="container pt-3">
-        <Skeleton className="h-24 w-full mt-4" />
-        <Skeleton className="h-24 w-full mt-4" />
-        <Skeleton className="h-24 w-full mt-4" />
-        <Skeleton className="h-24 w-full mt-4" />
+        <Skeleton className="mt-4 h-24 w-full" />
+        <Skeleton className="mt-4 h-24 w-full" />
+        <Skeleton className="mt-4 h-24 w-full" />
+        <Skeleton className="mt-4 h-24 w-full" />
       </div>
     </div>
   )

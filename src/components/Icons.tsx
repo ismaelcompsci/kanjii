@@ -1,6 +1,10 @@
 import {
+  ArrowRight,
+  CreditCard,
   LucideProps,
   Moon,
+  Settings,
+  Star,
   SunMedium,
   Twitter,
   User,
@@ -14,6 +18,10 @@ export const Icons = {
   sun: SunMedium,
   moon: Moon,
   twitter: Twitter,
+  settings: Settings,
+  billing: CreditCard,
+  arrowRight: ArrowRight,
+  like: Star,
   logo: (props: LucideProps) => (
     <svg
       viewBox="0 0 109 109"

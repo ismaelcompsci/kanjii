@@ -12,14 +12,14 @@ import {
 import axios from "axios"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
-import getKanji from "../actions/getKanji"
-import { VOCABULARY_PAGINATE_NUMBER } from "../config/site"
-import { cn } from "../lib/utils"
-import { CreateUpdateValidatorPayload } from "../lib/validators/updatePageValidator"
+import getKanji from "../../actions/getKanji"
+import { VOCABULARY_PAGINATE_NUMBER } from "../../config/site"
+import { cn } from "../../lib/utils"
+import { CreateUpdateValidatorPayload } from "../../lib/validators/updatePageValidator"
+import MainKanjiSkeleton from "../skeletons/MainKanjiSkeleton"
+import { Button } from "../ui/Button"
+import { Skeleton } from "../ui/Skeleton"
 import MainKanji from "./MainKanji"
-import MainKanjiSkeleton from "./skeletons/MainKanjiSkeleton"
-import { Button } from "./ui/Button"
-import { Skeleton } from "./ui/Skeleton"
 
 interface StrokeInfoPageProps {
   pack: VocabularyPack
@@ -45,6 +45,9 @@ const StrokeInfoPage: FC<StrokeInfoPageProps> = ({
 
   const [currentPage, setCurrentPage] = useState<number>(initialPage || 0)
   const [fetchedPages, setFetchedPages] = useState<number[]>([initialPage || 0])
+  const [done, setDone] = useState<number>(0)
+
+  const [finished, setFinished] = useState<boolean>(false)
 
   const {
     isSuccess,
@@ -61,14 +64,11 @@ const StrokeInfoPage: FC<StrokeInfoPageProps> = ({
     async ({ pageParam = initialPage }) => {
       const query = `/api/vocabulary?limit=${VOCABULARY_PAGINATE_NUMBER}&page=${pageParam}&vocabularyPackId=${pack.id}`
       const { data } = await getKanji({ query, page: pageParam })
-
       return { page: pageParam, data: data } as kanjiData
     },
     {
       getNextPageParam: (lastPage) => {
-        // TODO: check end of pagination behavior
         if (lastPage.page >= Math.ceil(pack.vocabularyCount / 5)) {
-          console.log("lastPage")
           return undefined
         }
         return lastPage.page + 1
@@ -84,9 +84,11 @@ const StrokeInfoPage: FC<StrokeInfoPageProps> = ({
 
   const vocabulary = data?.pages.sort((a, b) => a.page - b.page)
 
-  // Prefetch next page on 3rd button
   useEffect(() => {
-    if (selectedButton === 3 && hasNextPage) {
+    if (
+      selectedButton === vocabulary?.[currentKIndex]?.data?.length - 1 &&
+      hasNextPage
+    ) {
       const f = fetchedPages.find((page) => page === currentPage + 1)
       if (f) return
 
@@ -112,7 +114,20 @@ const StrokeInfoPage: FC<StrokeInfoPageProps> = ({
   }
 
   const handleNext = () => {
-    if (selectedButton < 4) {
+    if (data?.pages[data.pages.length - 1].data.length === 0) {
+      setDone((x) => x + 1)
+      if (done === 1) {
+        setFinished(true)
+        const payload = {
+          packId: pack.id,
+          finished: true,
+        }
+        axios.post(`/api/user/${pack.name}/finished`, payload)
+        setCurrentPage(0)
+      }
+    }
+
+    if (selectedButton < vocabulary?.[currentKIndex]?.data?.length - 1) {
       setSelectedButton((prev) => prev + 1)
       setCurrentWord(vocabulary?.[currentKIndex].data[selectedButton + 1])
       return
@@ -152,7 +167,6 @@ const StrokeInfoPage: FC<StrokeInfoPageProps> = ({
 
       const { data } = await axios.put(`/api/user/${pack.name}/page`, payload)
 
-      console.log(data)
       return data
     },
     onSuccess: () => {
@@ -164,6 +178,13 @@ const StrokeInfoPage: FC<StrokeInfoPageProps> = ({
 
   useEffect(() => {
     updateUserPage()
+    if (currentPage === 1) {
+      const payload = {
+        packId: pack.id,
+        finished: false,
+      }
+      axios.post(`/api/user/${pack.name}/finished`, payload)
+    }
   }, [currentPage, pack.id, router])
 
   useHotkeys([
@@ -173,14 +194,16 @@ const StrokeInfoPage: FC<StrokeInfoPageProps> = ({
 
   return (
     <div>
-      <div className="w-full flex items-center justify-center gap-2 pt-2">
-        {isSuccess && (
+      {finished && <div className="text-lg">DONE</div>}
+      <div className="flex w-full items-center justify-center gap-2 pt-2">
+        {!finished && isSuccess && (
           <ChevronLeft
             onClick={handlePrev}
-            className="hover:text-slate-500 duration-300 hover:scale-125 transition ease-in-out delay-150 cursor-pointer transform"
+            className="transform cursor-pointer transition duration-300 delay-150 ease-in-out hover:scale-125 hover:text-slate-500"
           />
         )}
-        {isSuccess &&
+        {!finished &&
+          isSuccess &&
           vocabulary?.[currentKIndex]?.data?.map(
             (vocab: Vocabulary, index: number) => (
               <Button
@@ -188,25 +211,25 @@ const StrokeInfoPage: FC<StrokeInfoPageProps> = ({
                 key={index}
                 variant="outline"
                 className={cn(
-                  "w-[62px] h-[40px] px-0",
+                  "h-[40px] w-[62px] px-0",
                   selectedButton === index ? "bg-accent" : ""
                 )}
               >
-                <span className="w-full h-full overflow-hidden whitespace-nowrap text-ellipsis">
+                <span className="h-full w-full overflow-hidden text-ellipsis whitespace-nowrap">
                   {vocab.word}
                 </span>
               </Button>
             )
           )}
 
-        {isSuccess && (
+        {!finished && isSuccess && (
           <ChevronRight
             onClick={handleNext}
-            className="hover:text-slate-500 duration-300 hover:scale-125  transition ease-in-out delay-150 cursor-pointer transform"
+            className="transform cursor-pointer transition  duration-300 delay-150 ease-in-out hover:scale-125 hover:text-slate-500"
           />
         )}
       </div>
-      {currentWord && (
+      {!finished && currentWord && (
         <MainKanji
           key={currentWord.id}
           word={currentWord.word}
@@ -216,11 +239,11 @@ const StrokeInfoPage: FC<StrokeInfoPageProps> = ({
           englishSentence={currentWord.englishSentence}
         />
       )}
-      {(isLoading || isFetchingNextPage) && (
+      {!finished && (isLoading || isFetchingNextPage) && (
         <>
-          <div className="w-full flex items-center justify-center gap-2 pt-2">
+          <div className="flex w-full items-center justify-center gap-2 pt-2">
             {[1, 2, 3, 4, 5].map((index) => (
-              <Skeleton key={index} className=" w-[62px] h-[40px] px-0" />
+              <Skeleton key={index} className=" h-[40px] w-[62px] px-0" />
             ))}
           </div>
           <MainKanjiSkeleton />

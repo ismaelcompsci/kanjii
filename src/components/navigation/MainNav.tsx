@@ -1,10 +1,10 @@
 import Link from "next/link"
 
-import { getAuthSession } from "../lib/auth"
-import { cn } from "../lib/utils"
-import { ThemeToggle } from "./ThemeToggle"
-import UserAccountNav from "./UserAccountNav"
-import { buttonVariants } from "./ui/Button"
+import { getAuthSession } from "../../lib/auth"
+import { cn } from "../../lib/utils"
+import { ThemeToggle } from "../ThemeToggle"
+import UserAccountNav from "../UserAccountNav"
+import { buttonVariants } from "../ui/Button"
 
 export async function MainNav() {
   const session = await getAuthSession()

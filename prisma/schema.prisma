@@ -110,6 +110,7 @@ model SeenVocabularyPack {
   vocabularyPack   VocabularyPack @relation(fields: [vocabularyPackId], references: [id])
   vocabularyPackId String         @db.ObjectId
   currentPage      Int            @default(0)
+  finished         Boolean        @default(false)
 
   @@unique([userId, vocabularyPackId])
 }

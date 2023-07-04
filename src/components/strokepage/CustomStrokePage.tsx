@@ -4,7 +4,7 @@ import { getAuthSession } from "@/src/lib/auth"
 import { db } from "@/src/lib/db"
 import { VocabularyPack } from "@prisma/client"
 
-import StrokeInfoPage from "../StrokeInfoPage"
+import StrokeInfoPage from "../kanji/StrokeInfoPage"
 
 interface CustomStrokePageProps {
   pack: VocabularyPack

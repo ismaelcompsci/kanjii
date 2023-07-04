@@ -14,7 +14,7 @@ const Underline: FC<UnderlineProps> = ({ handleClick, content }) => {
         handleClick(content)
       }}
       className={cn(
-        "underline text-blue-800 cursor-pointer hover:text-primary"
+        "cursor-pointer text-blue-800 underline hover:text-primary"
       )}
     >
       {content}

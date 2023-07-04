@@ -3,21 +3,21 @@
 import { ChangeEvent, KeyboardEvent, memo, useState } from "react"
 
 import DownloadSvgButton from "./DownloadSvgButton"
-import StrokeGraph from "./StrokeGraph"
 import Underline from "./Underline"
+import StrokeGraph from "./kanji/StrokeGraph"
 import { Button } from "./ui/Button"
 import { Input } from "./ui/Input"
 
 const SearchResults = memo(({ inputText }: { inputText: string }) => {
   return (
-    <div className="w-full relative float-left">
-      <div className="flex justify-between w-full">
+    <div className="relative float-left w-full">
+      <div className="flex w-full justify-between">
         <h2 className="text-2xl">Stroke Order</h2>
         <DownloadSvgButton text={inputText} />
       </div>
       {inputText.split("").map((k, index) => (
         <div key={index} id={`${k}-${index}`}>
-          <h3 className="text-xl underline underline-offset-2 decoration-sky-500 hover:underline-offset-4 hover:text-sky-900 w-fit">
+          <h3 className="w-fit text-xl underline decoration-sky-500 underline-offset-2 hover:text-sky-900 hover:underline-offset-4">
             <a href={`https://jisho.org/search/${k}`} target="_blank">
               {k}
             </a>
@@ -63,7 +63,7 @@ export default function IndexPage() {
 
   return (
     <>
-      <div className="grid w-full sm:max-w-sm md:max-w-lg items-center gap-1.5">
+      <div className="grid w-full items-center gap-1.5 sm:max-w-sm md:max-w-lg">
         <div className="flex w-full items-center space-x-2">
           <Input
             onChange={handleChange}
@@ -81,7 +81,7 @@ export default function IndexPage() {
         </p>
       </div>
 
-      <div className="pt-4 w-full sm:w-1/2 ">
+      <div className="w-full pt-4 sm:w-1/2 ">
         {showDesc || inputText === "" ? (
           <>
             <p className="mb-5">
@@ -94,7 +94,7 @@ export default function IndexPage() {
               Once you submit your input we generate a detailed stroke order
               diagram.
             </p>
-            <ul className="list-disc mx-4">
+            <ul className="mx-4 list-disc">
               <li className="text-sm">
                 Example :{" "}
                 <Underline

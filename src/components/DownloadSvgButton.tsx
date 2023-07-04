@@ -37,7 +37,9 @@ const DownloadSvgButton: FC<DownloadSvgButtonProps> = ({ text }) => {
     setIsLoading(true)
     const zip = new JSZip()
 
-    for (const char of text) {
+    const chars = Array.from(text)
+
+    for (const char of chars) {
       const f = await downloadSvgAsPng(char, char, type, theme)
 
       if (!f) {
@@ -77,7 +79,7 @@ const DownloadSvgButton: FC<DownloadSvgButtonProps> = ({ text }) => {
           className="items-center"
           variant={"outline"}
         >
-          {!isLoading && <Download className="w-5 h-5 pr-1" />}
+          {!isLoading && <Download className="h-5 w-5 pr-1" />}
           Download All
         </Button>
       </DropdownMenuTrigger>

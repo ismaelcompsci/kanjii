@@ -1,4 +1,4 @@
-import DownloadSvgButton from "./DownloadSvgButton"
+import DownloadSvgButton from "../DownloadSvgButton"
 import StrokeGraph from "./StrokeGraph"
 
 interface MainKanjiProps {
@@ -18,12 +18,12 @@ const MainKanji = ({
 }: MainKanjiProps) => {
   return (
     <div className="container h-screen p-2">
-      <div className="p-1 flex flex-col md:flex-row">
-        <div className="text-[100px] whitespace-nowrap w-auto text-center justify-center hover:font-hira">
+      <div className="flex flex-col p-1 md:flex-row">
+        <div className="hover:font-hira w-auto justify-center whitespace-nowrap text-center text-[100px]">
           {word}
         </div>
-        <div className="container grid grid-cols-1 md:grid-cols-[50%_50%] gap-8 ">
-          <div className="text-center col-span-full h-10 font-semibold border-b">
+        <div className="container grid grid-cols-1 gap-8 md:grid-cols-[50%_50%] ">
+          <div className="col-span-full h-10 border-b text-center font-semibold">
             {word}
           </div>
           <div className="">
@@ -50,8 +50,8 @@ const MainKanji = ({
         </div>
       </div>
       <div className="w-auto pl-[0.9375rem] pr-[0.9375rem]">
-        <div className="w-full relative float-left">
-          <div className="flex justify-between w-full">
+        <div className="relative float-left w-full">
+          <div className="flex w-full justify-between">
             <h2>Stroke Order</h2>
             <DownloadSvgButton text={word} />
           </div>

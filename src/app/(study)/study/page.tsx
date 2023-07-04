@@ -13,6 +13,7 @@ const Page = async () => {
     include: {
       creator: {
         select: {
+          username: true,
           name: true,
           image: true,
         },
@@ -29,7 +30,6 @@ const Page = async () => {
         },
       })
     : null
-
   return (
     <>
       <StudyPacksFeed initialPacks={studyPacks} userSeenPacks={userSeenPacks} />
