@@ -2,7 +2,7 @@
 
 import { FC, ReactNode, forwardRef } from "react"
 import { usePathname } from "next/navigation"
-import { Menu } from "lucide-react"
+import { List, Menu } from "lucide-react"
 
 import { cn } from "../../lib/utils"
 import { Icons } from "../Icons"
@@ -54,6 +54,16 @@ const MobileNav: FC<MobileNavProps> = ({}) => {
               >
                 Learn to write Japanese with prewritten study packs
               </BigListItem>
+              <ListItem
+                className={cn(
+                  pathname === "/create" &&
+                    "bg-gradient-to-b from-muted/50 to-muted"
+                )}
+                href="/create"
+                title="Create"
+              >
+                Create your own study packs.
+              </ListItem>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
