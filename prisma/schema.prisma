@@ -61,10 +61,10 @@ model User {
 model Vocabulary {
   id              String  @id @default(auto()) @map("_id") @db.ObjectId
   word            String
-  reading         String
-  meaning         String
-  sentence        String
-  englishSentence String  @map("en-sentence")
+  reading         String?
+  meaning         String?
+  sentence        String?
+  englishSentence String? @map("en-sentence")
   sound           String?
   sentenceSound   String?
   hint            String?
@@ -74,21 +74,19 @@ model Vocabulary {
 }
 
 model VocabularyPack {
-  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
   name            String
-  vocabularyCount Int    @default(0)
+  vocabularyCount Int      @default(0)
+  counted         Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  creator User @relation(fields: [creatorId], references: [id])
+  creator   User   @relation(fields: [creatorId], references: [id])
+  creatorId String @db.ObjectId
 
   vocabulary         Vocabulary[]
   SeenVocabularyPack SeenVocabularyPack[]
   likes              Like[]
-  creatorId          String               @db.ObjectId
-
-  counted Boolean @default(false)
 
   @@unique([name])
 }

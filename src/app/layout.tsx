@@ -5,6 +5,7 @@ import Providers from "../components/Providers"
 import { TailwindIndicator } from "../components/TailwindIndicator"
 import { ThemeProvider } from "../components/ThemeProvider"
 import { Nav } from "../components/navigation/Nav"
+import { Toaster } from "../components/ui/Toaster"
 import { siteConfig } from "../config/site"
 import { fontSans } from "../lib/fonts"
 import { cn } from "../lib/utils"
@@ -45,6 +46,7 @@ export default function RootLayout({ children, authModal }: RootLayoutProps) {
           >
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
               <div className="relative flex min-h-screen flex-col">
+                <Toaster />
                 <Nav />
                 {authModal}
                 <div className="flex-1">{children}</div>

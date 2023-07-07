@@ -1,11 +1,17 @@
-import { Textarea } from "@/src/components/ui/Textarea"
+import { redirect } from "next/navigation"
+import CreatePackCardForm from "@/src/components/CreatePackCardForm"
+import { getAuthSession } from "@/src/lib/auth"
 
-const CreatePage = () => {
+const CreatePage = async () => {
+  const session = await getAuthSession()
+
+  if (!session) {
+    redirect("/sign-in")
+  }
+
   return (
-    <div className="container py-6">
-      <h1 className="text-3xl font-bold md:text-4xl">Create</h1>
-      <p className="text-muted-fore">Create your own study packs.</p>
-      <div className="py-4"></div>
+    <div className="space-y-6">
+      <CreatePackCardForm />
     </div>
   )
 }
