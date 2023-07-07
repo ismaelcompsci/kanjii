@@ -242,10 +242,10 @@ const StrokeInfoPage: FC<StrokeInfoPageProps> = ({
         <MainKanji
           key={currentWord.id}
           word={currentWord.word}
-          reading={currentWord.reading}
-          meaning={currentWord.meaning}
-          sentence={currentWord.sentence}
-          englishSentence={currentWord.englishSentence}
+          reading={currentWord.reading || ""}
+          meaning={currentWord.meaning || ""}
+          sentence={currentWord.sentence || ""}
+          englishSentence={currentWord.englishSentence || ""}
         />
       )}
       {!finished && (isLoading || isFetchingNextPage) && (

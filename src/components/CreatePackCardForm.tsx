@@ -1,6 +1,7 @@
 "use client"
 
 import { FC, useCallback, useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import {
   Form,
   FormControl,
@@ -11,30 +12,17 @@ import {
   FormMessage,
 } from "@/src/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import axios from "axios"
 import { useTheme } from "next-themes"
 import { SubmitHandler, useForm } from "react-hook-form"
 import * as z from "zod"
 
 import { toast } from "../hooks/use-toast"
 import { darkTheme, lightTheme } from "../lib/codeEditorStyles"
+import { VocabularyObjectSchema } from "../lib/validators/vocabularyFormValidator"
 import VocabularyInput from "./VocabularyInput"
 import { Button } from "./ui/Button"
 import { Input } from "./ui/Input"
-
-const VocabularySchema = z.strictObject({
-  word: z.string().min(1).max(64),
-  reading: z.string().min(1).max(128).optional(),
-  meaning: z.string().min(1).max(254).optional(),
-  sentence: z.string().min(1).max(254).optional(),
-  englishSentence: z.string().min(1).max(254).optional(),
-})
-
-const LazyVocab = z.array(VocabularySchema)
-
-// TODO :
-// minimial Vocab
-// dumbpeople form
-// api endopoint
 
 const formSchema = z.object({
   name: z
@@ -46,6 +34,7 @@ const formSchema = z.object({
 interface CreatePackCardFormProps {}
 
 const CreatePackCardForm: FC<CreatePackCardFormProps> = ({}) => {
+  const router = useRouter()
   const { theme } = useTheme()
   const currentTheme = theme === "dark" ? darkTheme : lightTheme
 
@@ -64,33 +53,46 @@ const CreatePackCardForm: FC<CreatePackCardFormProps> = ({}) => {
     name,
   }) => {
     if (!json) return
+    let errors = []
 
     for (const obj of json) {
       try {
-        VocabularySchema.parse(obj)
+        VocabularyObjectSchema.parse(obj)
       } catch (error: any) {
-        console.log(error.message)
+        const err = JSON.parse(error.message)[0]
         toast({
-          title: "Invalid vocabulary!",
+          title: `Error: ${err.code}`,
           description: (
-            <pre className="mt-2 w-[340px] overflow-hidden rounded-md bg-slate-950 p-4">
-              <code className="inline-block text-white ">
-                {JSON.stringify(obj, null, 2)}
-              </code>
-            </pre>
+            <>
+              <div className="flex flex-col">
+                <span>"{err.keys[0]}" is invalid</span>
+                <span className="text-xs text-muted-foreground">
+                  {err.message}
+                </span>
+              </div>
+              <pre className="mt-2 w-[340px] overflow-hidden rounded-md bg-slate-950 p-4">
+                <code className="inline-block text-white ">
+                  {JSON.stringify(obj, null, 2)}
+                </code>
+              </pre>
+            </>
           ),
           variant: "destructive",
         })
+        errors.push(err)
         break
       }
     }
 
-    const payload = {
-      name: name,
-      vocabulary: json,
+    if (errors.length === 0) {
+      const payload = {
+        name: name,
+        vocabulary: json,
+      }
+      await axios.post("/api/create/pack", payload)
+      router.push("/study")
     }
-
-    console.log(payload)
+    return
   }
 
   const formatJson = useCallback(
