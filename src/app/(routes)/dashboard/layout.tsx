@@ -1,4 +1,4 @@
-import { notFound, redirect } from "next/navigation"
+import { redirect } from "next/navigation"
 import { DashboardNav } from "@/src/components/dashboard/DashboardNav"
 import { dashboardConfig } from "@/src/config/dashboard"
 import { getAuthSession } from "@/src/lib/auth"

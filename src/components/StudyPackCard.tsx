@@ -26,8 +26,8 @@ interface StudyPackCardProps {
     }
     likes: Like[]
   }
-  currentLike: Like | undefined
-  seenPack: SeenVocabularyPack | undefined
+  currentLike?: Like | undefined
+  seenPack?: SeenVocabularyPack | undefined
 }
 const StudyPackCard: FC<StudyPackCardProps> = ({
   pack,

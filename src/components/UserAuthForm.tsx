@@ -3,7 +3,7 @@
 import { FC, useState } from "react"
 import { signIn } from "next-auth/react"
 
-import { toast, useToast } from "../hooks/use-toast"
+import { toast } from "../hooks/use-toast"
 import { cn } from "../lib/utils"
 import { Icons } from "./Icons"
 import { Button } from "./ui/Button"
@@ -11,7 +11,6 @@ import { Button } from "./ui/Button"
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const UserAuthForm: FC<UserAuthFormProps> = ({ className, ...props }) => {
-  const { toast } = useToast()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const loginWithGoogle = async () => {

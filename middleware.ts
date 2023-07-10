@@ -4,8 +4,6 @@ import { withAuth } from "next-auth/middleware"
 
 export default withAuth(
   async function middleware(req) {
-    console.log("NOT AUTH")
-
     const token = await getToken({ req })
     const isAuth = !!token
     const isAuthPage =
@@ -13,9 +11,7 @@ export default withAuth(
       req.nextUrl.pathname.startsWith("/sign-up")
 
     if (isAuthPage) {
-      console.log("AUTHPAGE")
       if (isAuth) {
-        console.log("IS AUTH")
         return NextResponse.redirect(new URL("/dashboard", req.url))
       }
 
@@ -23,7 +19,6 @@ export default withAuth(
     }
 
     if (!isAuth) {
-      console.log("NOT AUTH")
       return NextResponse.redirect(new URL(`/sign-in`, req.url))
     }
   },
@@ -38,6 +33,7 @@ export default withAuth(
     },
   }
 )
+
 export const config = {
-  matcher: ["/dashboard/:path*", "/study/:path*"],
+  matcher: ["/dashboard/:path*", "/study/:path*", "/create"],
 }

@@ -3,6 +3,7 @@ import {
   CreditCard,
   LucideProps,
   Moon,
+  Package,
   Settings,
   Star,
   SunMedium,
@@ -21,6 +22,7 @@ export const Icons = {
   settings: Settings,
   billing: CreditCard,
   arrowRight: ArrowRight,
+  package: Package,
   like: Star,
   logo: (props: LucideProps) => (
     <svg

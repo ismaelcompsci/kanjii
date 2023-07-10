@@ -5,17 +5,6 @@ interface CreateLayoutProps {
   children: React.ReactNode
 }
 
-// const sidebarNavItems = [
-//   {
-//     title: "Pack",
-//     href: "/create",
-//   },
-//   {
-//     title: "Vocabulary",
-//     href: "/create/vocabulary",
-//   },
-// ]
-
 const CreateLayout: FC<CreateLayoutProps> = ({ children }) => {
   return (
     <>

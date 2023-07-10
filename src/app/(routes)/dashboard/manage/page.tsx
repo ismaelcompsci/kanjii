@@ -8,22 +8,18 @@ import { Button } from "@/src/components/ui/Button"
 import { EmptyPlaceholder } from "@/src/components/ui/EmptyPlaceholder"
 import { getAuthSession } from "@/src/lib/auth"
 import { db } from "@/src/lib/db"
+import { Edit, Trash } from "lucide-react"
 
-export const metadata = {
-  title: "Dashboard",
-}
-
-const DashboardPage = async ({}) => {
+const PacksPage = async () => {
   const session = await getAuthSession()
 
   if (!session) {
-    return redirect("/sign-in")
+    redirect("/sign-in")
   }
 
-  // https://nextjs.org/docs/app/building-your-application/data-fetching/fetching#data-fetching-patterns
-  const likedPacksData = db.vocabularyPack.findMany({
+  const myPacks = await db.vocabularyPack.findMany({
     where: {
-      likes: { some: { userId: session.user.id } },
+      creatorId: session.user.id,
     },
     include: {
       creator: {
@@ -37,38 +33,40 @@ const DashboardPage = async ({}) => {
     },
   })
 
-  const userSeenPacksData = db.seenVocabularyPack.findMany({
-    where: {
-      userId: session.user.id,
-    },
-  })
-
-  const [likedPacks, userSeenPacks] = await Promise.all([
-    likedPacksData,
-    userSeenPacksData,
-  ])
-
   return (
     <DashboardShell>
-      <DashboardHeader heading="Likes" text="View and manage your likes" />
-      {likedPacks?.length ? (
+      <DashboardHeader
+        heading="Manage"
+        text="View and manage your Vocabulary Packs"
+      />
+      {myPacks?.length ? (
         <div className="mx-4 mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8">
-          {likedPacks.map((likePack) => {
-            const currentLike = likePack.likes.find(
+          {myPacks.map((pack) => {
+            const currentLike = pack.likes.find(
               (like) => like.userId === session?.user.id
             )
-
-            const seenPack = userSeenPacks.find(
-              (seenPack) => seenPack.vocabularyPackId === likePack.id
-            )
+            // TODO : make a new component
+            // add edit form
+            // add delete api and edit api
 
             return (
-              <StudyPackCard
-                pack={likePack}
-                key={likePack.id}
-                currentLike={currentLike}
-                seenPack={seenPack}
-              />
+              <div className="col-span-full">
+                <div className="mb-2 flex items-center gap-x-4">
+                  <Button variant="default" size="sm" className="relative">
+                    <Edit className="mr-1 h-4 w-4" />
+                    Edit
+                  </Button>
+                  <Button variant="destructive" size="sm" className="relative">
+                    <Trash className="mr-1 h-4 w-4" />
+                    Delete
+                  </Button>
+                </div>
+                <StudyPackCard
+                  pack={pack}
+                  key={pack.id}
+                  currentLike={currentLike}
+                />
+              </div>
             )
           })}
         </div>
@@ -91,4 +89,4 @@ const DashboardPage = async ({}) => {
   )
 }
 
-export default DashboardPage
+export default PacksPage

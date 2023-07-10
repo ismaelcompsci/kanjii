@@ -8,6 +8,11 @@ export const dashboardConfig: DashboardConfig = {
       icon: "like",
     },
     {
+      title: "Manage",
+      href: "/dashboard/manage",
+      icon: "package",
+    },
+    {
       title: "Billing",
       href: "/dashboard/billing",
       icon: "billing",
