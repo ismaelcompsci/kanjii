@@ -30,8 +30,10 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+
 # turbo
 .turbo
 
 .contentlayer
 .env
+.vscode

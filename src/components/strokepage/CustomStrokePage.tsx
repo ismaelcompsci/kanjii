@@ -32,14 +32,18 @@ const CustomStrokePage = async ({ pack }: CustomStrokePageProps) => {
   if (skip < 0) skip = 0
 
   if (!seen) {
-    await db.seenVocabularyPack.create({
-      data: {
-        userId: session.user.id,
-        vocabularyPackId: pack.id,
-      },
-    })
+    try {
+      await db.seenVocabularyPack.create({
+        data: {
+          userId: session.user.id,
+          vocabularyPackId: pack.id,
+        },
+      })
 
-    currentPage = 0
+      currentPage = 0
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (

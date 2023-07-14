@@ -1,6 +1,7 @@
 "use client"
 
 import { FC, useCallback, useEffect, useState } from "react"
+import dynamic from "next/dynamic"
 import { useRouter } from "next/navigation"
 import {
   Form,
@@ -12,7 +13,9 @@ import {
   FormMessage,
 } from "@/src/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Vocabulary } from "@prisma/client"
 import axios from "axios"
+import { Loader2 } from "lucide-react"
 import { useTheme } from "next-themes"
 import { SubmitHandler, useForm } from "react-hook-form"
 import * as z from "zod"
@@ -20,9 +23,17 @@ import * as z from "zod"
 import { toast } from "../hooks/use-toast"
 import { darkTheme, lightTheme } from "../lib/codeEditorStyles"
 import { VocabularyObjectSchema } from "../lib/validators/vocabularyFormValidator"
-import VocabularyInput from "./VocabularyInput"
 import { Button } from "./ui/Button"
 import { Input } from "./ui/Input"
+
+const VocabularyInput = dynamic(() => import("./VocabularyInput"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex w-full items-center justify-center align-middle">
+      <Loader2 className="ml- h-8 w-8 animate-spin" />
+    </div>
+  ),
+})
 
 const formSchema = z.object({
   name: z
@@ -31,21 +42,30 @@ const formSchema = z.object({
     .max(50, { message: "Pack name must be no more than 50 characters" }),
 })
 
-interface CreatePackCardFormProps {}
+interface CreatePackCardFormProps {
+  packName?: string
+  packVocabulary?: string
+  method?: string
+}
 
-const CreatePackCardForm: FC<CreatePackCardFormProps> = ({}) => {
+const CreatePackCardForm: FC<CreatePackCardFormProps> = ({
+  packName,
+  packVocabulary,
+  method,
+}) => {
   const router = useRouter()
   const { theme } = useTheme()
   const currentTheme = theme === "dark" ? darkTheme : lightTheme
 
   const [errorMessage, setErrorMessage] = useState<string>("")
-  const [code, setCode] = useState<string>(jsonString)
+  const [code, setCode] = useState<string>(packVocabulary || jsonString)
+  const [loading, setIsLoading] = useState(false)
   const [json, setJson] = useState([])
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      name: packName || "",
     },
   })
 
@@ -60,6 +80,8 @@ const CreatePackCardForm: FC<CreatePackCardFormProps> = ({}) => {
         VocabularyObjectSchema.parse(obj)
       } catch (error: any) {
         const err = JSON.parse(error.message)[0]
+
+        console.log(error)
         toast({
           title: `Error: ${err.code}`,
           description: (
@@ -89,8 +111,20 @@ const CreatePackCardForm: FC<CreatePackCardFormProps> = ({}) => {
         name: name,
         vocabulary: json,
       }
-      await axios.post("/api/create/pack", payload)
-      router.push("/study")
+      try {
+        setIsLoading(true)
+        if (method === "EDIT") {
+          await axios.post("/api/create/pack", payload)
+        } else {
+          await axios.post("/api/create/pack", payload)
+          router.push("/study")
+        }
+      } catch (error) {
+        console.log("CREATE_PACK_ERROR", error)
+        return
+      } finally {
+        setIsLoading(false)
+      }
     }
     return
   }
@@ -157,7 +191,6 @@ const CreatePackCardForm: FC<CreatePackCardFormProps> = ({}) => {
             </FormItem>
           )}
         />
-
         <VocabularyInput
           currentTheme={currentTheme}
           code={code}
@@ -165,7 +198,13 @@ const CreatePackCardForm: FC<CreatePackCardFormProps> = ({}) => {
           formatJson={formatJson}
           setCode={setCode}
         />
-        <Button type="submit">Submit</Button>
+        <Button
+          type="submit"
+          isLoading={loading}
+          disabled={form.getValues("name").length === 0 || loading}
+        >
+          Submit
+        </Button>
       </form>
     </Form>
   )

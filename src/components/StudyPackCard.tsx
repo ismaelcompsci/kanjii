@@ -28,11 +28,13 @@ interface StudyPackCardProps {
   }
   currentLike?: Like | undefined
   seenPack?: SeenVocabularyPack | undefined
+  showButton?: boolean
 }
 const StudyPackCard: FC<StudyPackCardProps> = ({
   pack,
   currentLike,
   seenPack,
+  showButton = true
 }) => {
   const router = useRouter()
 
@@ -56,6 +58,8 @@ const StudyPackCard: FC<StudyPackCardProps> = ({
           <CardTitle>{pack.name}</CardTitle>
           <CardDescription>Count: {pack.vocabularyCount}</CardDescription>
         </div>
+
+        {showButton && (
         <div className="flex items-center rounded-md text-secondary-foreground">
           <Button
             className="px-3"
@@ -64,6 +68,7 @@ const StudyPackCard: FC<StudyPackCardProps> = ({
             {seenPack ? <span>Continue</span> : <span>Start</span>}
           </Button>
         </div>
+        )}
       </CardHeader>
       <CardContent>
         <div className="flex w-full flex-row space-x-4 text-sm text-muted-foreground">

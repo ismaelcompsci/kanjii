@@ -14,6 +14,9 @@ function createStrokeOrderDiagram(
   useEffect(() => {
     const darkMode = theme === "dark" ? "dark" : ""
 
+    // found on https://jisho.org/
+    // line 18992
+    // https://assets.jisho.org/assets/application-fe07b0b8ade93cbea5bf2f513ab5d59be67f0c111905dbeabfb88aa48c81e88e.js
     const makeStrokeOrderDiagram = (f: Fragment): void => {
       if (svgRef.current && svgHolder.current) {
         const s: Paper = Snap(svgRef.current)
@@ -77,7 +80,7 @@ function createStrokeOrderDiagram(
             canvasHeight - 1
           )
           verticalGuide.attr({ class: "stroke-box-guide" })
-          frameBoxRight.attr({ class: "stroke-box-guide" })
+          frameBoxRight.attr({ class: "stroke-box" })
 
           // Draw previous strokes
           drawnPaths.forEach((existingPath) => {

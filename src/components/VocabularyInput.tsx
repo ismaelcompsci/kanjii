@@ -1,6 +1,7 @@
 "use client"
 
 import { FC } from "react"
+import Image from "next/image"
 import { json as jsonLang } from "@codemirror/lang-json"
 import CodeMirror from "@uiw/react-codemirror"
 
@@ -28,7 +29,7 @@ const VocabularyInput: FC<VocabularyInputProps> = ({
       <Button type="button" variant="secondary" onClick={formatJson}>
         Format
       </Button>
-      <div className="box-border overflow-auto rounded-md border outline-border">
+      <div className="box-border overflow-hidden rounded-md border outline-border">
         <CodeMirror
           value={code}
           extensions={extensions}
@@ -40,6 +41,16 @@ const VocabularyInput: FC<VocabularyInputProps> = ({
             WebkitBorderRadius: "8px",
           }}
         />
+        <div className="relative">
+          <div className="absolute bottom-0 left-0 -mb-2 h-16 w-16">
+            <Image
+              src={"/gifs/loading-2.gif"}
+              fill
+              alt=""
+              className="object-cover"
+            />
+          </div>
+        </div>
       </div>
       {errorMessage && (
         <div className="">

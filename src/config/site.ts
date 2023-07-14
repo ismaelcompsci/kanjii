@@ -19,7 +19,7 @@ export const siteConfig = {
   ],
   links: {
     twitter: "https://twitter.com/",
-    github: "https://github.com/",
+    github: "https://github.com/ismaelcompsci",
     docs: "https://ui.shadcn.com",
   },
 }

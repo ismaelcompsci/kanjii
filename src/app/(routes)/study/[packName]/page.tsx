@@ -26,8 +26,10 @@ const page = async ({ params }: pageProps) => {
   return (
     <div>
       {session ? (
+        /* @ts-ignore Server Component */
         <CustomStrokePage pack={pack} />
       ) : (
+        /* @ts-ignore Server Component */
         <GeneralStrokePage pack={pack} />
       )}
     </div>

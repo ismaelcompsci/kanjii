@@ -1,12 +1,14 @@
+import { CircleSlashed } from "lucide-react"
+
 import DownloadSvgButton from "../DownloadSvgButton"
 import StrokeGraph from "./StrokeGraph"
 
 interface MainKanjiProps {
   word: string
-  reading: string
-  meaning: string
-  sentence: string
-  englishSentence: string
+  reading: string | null
+  meaning: string | null
+  sentence: string | null
+  englishSentence: string | null
 }
 
 const MainKanji = ({
@@ -19,7 +21,7 @@ const MainKanji = ({
   return (
     <div className="container h-screen p-2">
       <div className="flex flex-col p-1 md:flex-row">
-        <div className="hover:font-hira w-auto justify-center whitespace-nowrap text-center text-[100px]">
+        <div className="w-auto justify-center whitespace-nowrap text-center text-[100px] hover:font-hira">
           {word}
         </div>
         <div className="container grid grid-cols-1 gap-8 md:grid-cols-[50%_50%] ">
@@ -28,24 +30,32 @@ const MainKanji = ({
           </div>
           <div className="">
             <div className="font-extralight">reading</div>
-            <div className="text-xl">{reading}</div>
+            <div className="text-xl">
+              {reading || <CircleSlashed className="h-4 w-4" />}
+            </div>
           </div>
 
           <div>
             <div className="font-extralight">meaning</div>
-            <div className="text-xl">{meaning}</div>
+            <div className="text-xl">
+              {meaning || <CircleSlashed className="h-4 w-4" />}
+            </div>
           </div>
           <div>
             <div className="font-extralight">sentence</div>
             {/* TODO MAKE THIS SAFER STRING TO HTML */}
             <div
-              className="text-xl"
-              dangerouslySetInnerHTML={{ __html: sentence }}
-            ></div>
+              className="text-xl font-light"
+              dangerouslySetInnerHTML={{
+                __html: sentence || "Ø",
+              }}
+            />
           </div>
           <div className="md:col-start-2">
             <div className="font-extralight">english sentence</div>
-            <div className="text-xl">{englishSentence}</div>
+            <div className="text-xl">
+              {englishSentence || <CircleSlashed className="h-4 w-4" />}
+            </div>
           </div>
         </div>
       </div>

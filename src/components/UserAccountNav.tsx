@@ -61,6 +61,14 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user }) => {
 
         <DropdownMenuItem
           className="hover:cursor-pointer"
+          onClick={() => router.push("/dashboard/manage")}
+        >
+          <Icons.package className="mr-2 h-4 w-4" />
+          <Link href="/dashboard/likes">Manage</Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem
+          className="hover:cursor-pointer"
           onClick={() => router.push("/dashboard/billing")}
         >
           <Icons.billing className="mr-2 h-4 w-4" />

@@ -42,6 +42,7 @@ export function Nav() {
         </div>
 
         <div className="flex flex-1 items-center justify-end space-x-4">
+          {/* @ts-ignore Server Component */}
           <MainNav />
         </div>
       </div>

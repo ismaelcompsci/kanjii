@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation"
+import ManagePacks from "@/src/components/ManagePacks"
 import StudyPackCard from "@/src/components/StudyPackCard"
 import {
   DashboardHeader,
@@ -6,6 +7,7 @@ import {
 } from "@/src/components/dashboard/DashboardShell"
 import { Button } from "@/src/components/ui/Button"
 import { EmptyPlaceholder } from "@/src/components/ui/EmptyPlaceholder"
+import { Separator } from "@/src/components/ui/separator"
 import { getAuthSession } from "@/src/lib/auth"
 import { db } from "@/src/lib/db"
 import { Edit, Trash } from "lucide-react"
@@ -50,21 +52,16 @@ const PacksPage = async () => {
             // add delete api and edit api
 
             return (
-              <div className="col-span-full">
+              <div className="col-span-full" key={pack.id}>
+                <Separator className="mb-4" />
                 <div className="mb-2 flex items-center gap-x-4">
-                  <Button variant="default" size="sm" className="relative">
-                    <Edit className="mr-1 h-4 w-4" />
-                    Edit
-                  </Button>
-                  <Button variant="destructive" size="sm" className="relative">
-                    <Trash className="mr-1 h-4 w-4" />
-                    Delete
-                  </Button>
+                  <ManagePacks pack={pack} />
                 </div>
                 <StudyPackCard
                   pack={pack}
                   key={pack.id}
                   currentLike={currentLike}
+                  showButton={false}
                 />
               </div>
             )
@@ -72,15 +69,15 @@ const PacksPage = async () => {
         </div>
       ) : (
         <EmptyPlaceholder>
-          <EmptyPlaceholder.Icon name="like" />
-          <EmptyPlaceholder.Title>No liked packs</EmptyPlaceholder.Title>
+          <EmptyPlaceholder.Icon name="package" />
+          <EmptyPlaceholder.Title>Empty :/</EmptyPlaceholder.Title>
           <EmptyPlaceholder.Description>
-            You don&apos;t have any liked packs yet.{" "}
+            You don&apos;t have any packs to manage yet.{" "}
             <a
-              href="/study"
+              href="/create"
               className="underline decoration-destructive underline-offset-2 transition duration-1000 ease-in-out hover:underline-offset-4"
             >
-              Start browsing.
+              Create one!.
             </a>
           </EmptyPlaceholder.Description>
         </EmptyPlaceholder>

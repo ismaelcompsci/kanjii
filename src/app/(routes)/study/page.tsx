@@ -1,4 +1,5 @@
 import StudyPacksFeed from "@/src/components/StudyPacksPage"
+import { EmptyPlaceholder } from "@/src/components/ui/EmptyPlaceholder"
 import { STUDY_PACK_PAGINATE_NUMBER } from "@/src/config/site"
 import { getAuthSession } from "@/src/lib/auth"
 import { db } from "@/src/lib/db"
@@ -30,6 +31,18 @@ const Page = async () => {
         },
       })
     : null
+
+  if (studyPacks.length === 0) {
+    return (
+      <EmptyPlaceholder className="border-none">
+        <EmptyPlaceholder.Title>No study packs</EmptyPlaceholder.Title>
+        <EmptyPlaceholder.Description>
+          This place is empty :/
+        </EmptyPlaceholder.Description>
+      </EmptyPlaceholder>
+    )
+  }
+
   return (
     <>
       <StudyPacksFeed initialPacks={studyPacks} userSeenPacks={userSeenPacks} />

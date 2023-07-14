@@ -1,10 +1,10 @@
+import Image from "next/image"
 import { redirect } from "next/navigation"
 import StudyPackCard from "@/src/components/StudyPackCard"
 import {
   DashboardHeader,
   DashboardShell,
 } from "@/src/components/dashboard/DashboardShell"
-import { Button } from "@/src/components/ui/Button"
 import { EmptyPlaceholder } from "@/src/components/ui/EmptyPlaceholder"
 import { getAuthSession } from "@/src/lib/auth"
 import { db } from "@/src/lib/db"
@@ -52,7 +52,17 @@ const DashboardPage = async ({}) => {
     <DashboardShell>
       <DashboardHeader heading="Likes" text="View and manage your likes" />
       {likedPacks?.length ? (
-        <div className="mx-4 mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8">
+        <div className="mx-4 mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+          <div className="h-full pb-1 lg:absolute">
+            <div className="absolute right-10 -z-10 h-12 w-12 lg:-right-6 lg:-rotate-90">
+              <Image
+                src={"/gifs/loading-4.gif"}
+                alt="cat"
+                fill
+                className="object-cover"
+              />
+            </div>
+          </div>
           {likedPacks.map((likePack) => {
             const currentLike = likePack.likes.find(
               (like) => like.userId === session?.user.id

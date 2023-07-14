@@ -16,6 +16,7 @@ import getKanji from "../../actions/getKanji"
 import { VOCABULARY_PAGINATE_NUMBER } from "../../config/site"
 import { cn } from "../../lib/utils"
 import { CreateUpdateValidatorPayload } from "../../lib/validators/updatePageValidator"
+import CompletePack from "../CompletePack"
 import MainKanjiSkeleton from "../skeletons/MainKanjiSkeleton"
 import { Button } from "../ui/Button"
 import { Skeleton } from "../ui/Skeleton"
@@ -203,7 +204,7 @@ const StrokeInfoPage: FC<StrokeInfoPageProps> = ({
 
   return (
     <div>
-      {finished && <div className="text-lg">DONE</div>}
+      {finished && <CompletePack />}
       <div className="flex w-full items-center justify-center gap-2 pt-2">
         {!finished && isSuccess && (
           <ChevronLeft
@@ -242,10 +243,10 @@ const StrokeInfoPage: FC<StrokeInfoPageProps> = ({
         <MainKanji
           key={currentWord.id}
           word={currentWord.word}
-          reading={currentWord.reading || ""}
-          meaning={currentWord.meaning || ""}
-          sentence={currentWord.sentence || ""}
-          englishSentence={currentWord.englishSentence || ""}
+          reading={currentWord.reading}
+          meaning={currentWord.meaning}
+          sentence={currentWord.sentence}
+          englishSentence={currentWord.englishSentence}
         />
       )}
       {!finished && (isLoading || isFetchingNextPage) && (

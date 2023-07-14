@@ -1,6 +1,7 @@
 import "./globals.css"
 import { Metadata } from "next"
 
+import { Footer } from "../components/Footer"
 import Providers from "../components/Providers"
 import { TailwindIndicator } from "../components/TailwindIndicator"
 import { ThemeProvider } from "../components/ThemeProvider"
@@ -32,6 +33,8 @@ interface RootLayoutProps {
   authModal: React.ReactNode
 }
 
+// this smells :/
+
 export default function RootLayout({ children, authModal }: RootLayoutProps) {
   return (
     <>
@@ -50,6 +53,7 @@ export default function RootLayout({ children, authModal }: RootLayoutProps) {
                 <Nav />
                 {authModal}
                 <div className="flex-1">{children}</div>
+                <Footer className="border-t" />
               </div>
               <TailwindIndicator />
             </ThemeProvider>
