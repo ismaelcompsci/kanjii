@@ -2,10 +2,9 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-
-import { cn } from "../../lib/utils"
-import { SidebarNavItem } from "../../types"
-import { Icons } from "../Icons"
+import { Icons } from "@/src/components/Icons"
+import { cn } from "@/src/lib/utils"
+import { SidebarNavItem } from "@/src/types"
 
 interface DashboardNavProps {
   items: SidebarNavItem[]

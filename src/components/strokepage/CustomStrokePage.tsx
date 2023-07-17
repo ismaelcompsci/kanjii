@@ -1,10 +1,9 @@
 import { notFound } from "next/navigation"
+import StrokeInfoPage from "@/src/components/kanji/StrokeInfoPage"
 import { VOCABULARY_PAGINATE_NUMBER } from "@/src/config/site"
 import { getAuthSession } from "@/src/lib/auth"
 import { db } from "@/src/lib/db"
 import { VocabularyPack } from "@prisma/client"
-
-import StrokeInfoPage from "../kanji/StrokeInfoPage"
 
 interface CustomStrokePageProps {
   pack: VocabularyPack

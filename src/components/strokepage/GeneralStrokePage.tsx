@@ -1,7 +1,6 @@
 import { FC } from "react"
+import StrokeInfoPage from "@/src/components/kanji/StrokeInfoPage"
 import { VocabularyPack } from "@prisma/client"
-
-import StrokeInfoPage from "../kanji/StrokeInfoPage"
 
 interface GeneralStrokePageProps {
   pack: VocabularyPack

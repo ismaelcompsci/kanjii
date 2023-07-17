@@ -2,6 +2,15 @@
 
 import { FC, startTransition, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import getKanji from "@/src/actions/getKanji"
+import CompletePack from "@/src/components/CompletePack"
+import MainKanji from "@/src/components/kanji/MainKanji"
+import MainKanjiSkeleton from "@/src/components/skeletons/MainKanjiSkeleton"
+import { Button } from "@/src/components/ui/Button"
+import { Skeleton } from "@/src/components/ui/Skeleton"
+import { VOCABULARY_PAGINATE_NUMBER } from "@/src/config/site"
+import { cn } from "@/src/lib/utils"
+import { CreateUpdateValidatorPayload } from "@/src/lib/validators/updatePageValidator"
 import { useHotkeys } from "@mantine/hooks"
 import { Vocabulary, VocabularyPack } from "@prisma/client"
 import {
@@ -11,16 +20,6 @@ import {
 } from "@tanstack/react-query"
 import axios from "axios"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-
-import getKanji from "../../actions/getKanji"
-import { VOCABULARY_PAGINATE_NUMBER } from "../../config/site"
-import { cn } from "../../lib/utils"
-import { CreateUpdateValidatorPayload } from "../../lib/validators/updatePageValidator"
-import CompletePack from "../CompletePack"
-import MainKanjiSkeleton from "../skeletons/MainKanjiSkeleton"
-import { Button } from "../ui/Button"
-import { Skeleton } from "../ui/Skeleton"
-import MainKanji from "./MainKanji"
 
 interface StrokeInfoPageProps {
   pack: VocabularyPack

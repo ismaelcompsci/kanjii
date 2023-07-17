@@ -1,7 +1,6 @@
+import DownloadSvgButton from "@/src/components/DownloadSvgButton"
+import StrokeGraph from "@/src/components/kanji/StrokeGraph"
 import { CircleSlashed } from "lucide-react"
-
-import DownloadSvgButton from "../DownloadSvgButton"
-import StrokeGraph from "./StrokeGraph"
 
 interface MainKanjiProps {
   word: string

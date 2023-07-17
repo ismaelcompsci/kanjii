@@ -1,12 +1,6 @@
 import { FC, useState } from "react"
 import { useRouter } from "next/navigation"
-import JSZip from "jszip"
-import { Download } from "lucide-react"
-import { useSession } from "next-auth/react"
-import { useTheme } from "next-themes"
-
-import { downloadSvgAsPng } from "../lib/saveSvg"
-import { Button } from "./ui/Button"
+import { Button } from "@/src/components/ui/Button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +9,12 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "./ui/DropdownMenu"
+} from "@/src/components/ui/DropdownMenu"
+import { downloadSvgAsPng } from "@/src/lib/saveSvg"
+import JSZip from "jszip"
+import { Download } from "lucide-react"
+import { useSession } from "next-auth/react"
+import { useTheme } from "next-themes"
 
 interface DownloadSvgButtonProps {
   text: string

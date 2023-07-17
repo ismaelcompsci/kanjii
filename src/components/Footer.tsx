@@ -1,10 +1,9 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-
-import { siteConfig } from "../config/site"
-import { cn } from "../lib/utils"
-import { Icons } from "./Icons"
+import { Icons } from "@/src/components/Icons"
+import { siteConfig } from "@/src/config/site"
+import { cn } from "@/src/lib/utils"
 
 export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
   const pathname = usePathname()

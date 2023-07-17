@@ -1,12 +1,11 @@
 "use client"
 
 import { ChangeEvent, KeyboardEvent, memo, useState } from "react"
-
-import DownloadSvgButton from "./DownloadSvgButton"
-import Underline from "./Underline"
-import StrokeGraph from "./kanji/StrokeGraph"
-import { Button } from "./ui/Button"
-import { Input } from "./ui/Input"
+import DownloadSvgButton from "@/src/components/DownloadSvgButton"
+import Underline from "@/src/components/Underline"
+import StrokeGraph from "@/src/components/kanji/StrokeGraph"
+import { Button } from "@/src/components/ui/Button"
+import { Input } from "@/src/components/ui/Input"
 
 const SearchResults = memo(({ inputText }: { inputText: string }) => {
   return (

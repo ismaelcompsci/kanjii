@@ -2,10 +2,9 @@
 
 import { FC } from "react"
 import Image from "next/image"
+import { Button } from "@/src/components/ui/Button"
 import { json as jsonLang } from "@codemirror/lang-json"
 import CodeMirror from "@uiw/react-codemirror"
-
-import { Button } from "./ui/Button"
 
 interface VocabularyInputProps {
   formatJson: (_: any, spaces?: number) => void

@@ -2,20 +2,20 @@
 
 import { FC } from "react"
 import { useRouter } from "next/navigation"
-import { Like, SeenVocabularyPack, VocabularyPack } from "@prisma/client"
-import { Circle } from "lucide-react"
-
-import { formatTimeToNow } from "../lib/utils"
-import PackLikeClient from "./PackLikeClient"
-import { UserAvatar } from "./UserAvatar"
-import { Button } from "./ui/Button"
+import PackLikeClient from "@/src/components/PackLikeClient"
+import { UserAvatar } from "@/src/components/UserAvatar"
+import { Button } from "@/src/components/ui/Button"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "./ui/Card"
+} from "@/src/components/ui/Card"
+import { Like, SeenVocabularyPack, VocabularyPack } from "@prisma/client"
+import { Circle } from "lucide-react"
+
+import { formatTimeToNow } from "../lib/utils"
 
 interface StudyPackCardProps {
   pack: VocabularyPack & {

@@ -2,15 +2,7 @@
 
 import { FC } from "react"
 import { useRouter } from "next/navigation"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { User } from "@prisma/client"
-import { useMutation } from "@tanstack/react-query"
-import axios, { AxiosError } from "axios"
-import { useForm } from "react-hook-form"
-
-import { toast } from "../hooks/use-toast"
-import { UsernameRequest, UsernameValidator } from "../lib/validators/username"
-import { Button } from "./ui/Button"
+import { Button } from "@/src/components/ui/Button"
 import {
   Card,
   CardContent,
@@ -18,9 +10,19 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/Card"
-import { Input } from "./ui/Input"
-import { Label } from "./ui/label"
+} from "@/src/components/ui/Card"
+import { Input } from "@/src/components/ui/Input"
+import { Label } from "@/src/components/ui/label"
+import { toast } from "@/src/hooks/use-toast"
+import {
+  UsernameRequest,
+  UsernameValidator,
+} from "@/src/lib/validators/username"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { User } from "@prisma/client"
+import { useMutation } from "@tanstack/react-query"
+import axios, { AxiosError } from "axios"
+import { useForm } from "react-hook-form"
 
 interface UserNameFormProps {
   user: Pick<User, "id" | "username">

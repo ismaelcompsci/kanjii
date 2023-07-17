@@ -1,4 +1,4 @@
-import { Skeleton } from "../ui/Skeleton"
+import { Skeleton } from "@/src/components/ui/Skeleton"
 
 const MainKanjiSkeleton = () => {
   return (

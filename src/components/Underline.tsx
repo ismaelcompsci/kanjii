@@ -1,6 +1,5 @@
 import { FC } from "react"
-
-import { cn } from "../lib/utils"
+import { cn } from "@/src/lib/utils"
 
 interface UnderlineProps {
   handleClick: (content: string) => void

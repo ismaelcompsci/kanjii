@@ -1,17 +1,16 @@
 import { FC } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
-
-import { cn } from "../lib/utils"
-import { buttonVariants } from "./ui/Button"
+import { buttonVariants } from "@/src/components/ui/Button"
 import {
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
-} from "./ui/Card"
+} from "@/src/components/ui/Card"
+import { cn } from "@/src/lib/utils"
+import { ArrowLeft } from "lucide-react"
 
 interface CompletePackProps {}
 

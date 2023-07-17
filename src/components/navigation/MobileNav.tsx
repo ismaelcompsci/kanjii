@@ -2,10 +2,7 @@
 
 import { FC, ReactNode, forwardRef } from "react"
 import { usePathname } from "next/navigation"
-import { List, Menu } from "lucide-react"
-
-import { cn } from "../../lib/utils"
-import { Icons } from "../Icons"
+import { Icons } from "@/src/components/Icons"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -13,7 +10,9 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "../ui/navigation-menu"
+} from "@/src/components/ui/navigation-menu"
+import { cn } from "@/src/lib/utils"
+import { Menu } from "lucide-react"
 
 interface MobileNavProps {}
 

@@ -2,13 +2,12 @@
 
 import { FC } from "react"
 import { useRouter } from "next/navigation"
+import { Button } from "@/src/components/ui/Button"
+import { useToast } from "@/src/hooks/use-toast"
 import { VocabularyPack } from "@prisma/client"
 import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
 import { Edit, Trash } from "lucide-react"
-
-import { useToast } from "../hooks/use-toast"
-import { Button } from "./ui/Button"
 
 interface ManagePacksProps {
   pack: VocabularyPack

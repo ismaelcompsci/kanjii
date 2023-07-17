@@ -3,6 +3,8 @@
 import { FC, useCallback, useEffect, useState } from "react"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/navigation"
+import { Button } from "@/src/components/ui/Button"
+import { Input } from "@/src/components/ui/Input"
 import {
   Form,
   FormControl,
@@ -12,18 +14,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/src/components/ui/form"
+import { toast } from "@/src/hooks/use-toast"
+import { darkTheme, lightTheme } from "@/src/lib/codeEditorStyles"
+import { VocabularyObjectSchema } from "@/src/lib/validators/vocabularyFormValidator"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import { Loader2 } from "lucide-react"
 import { useTheme } from "next-themes"
 import { SubmitHandler, useForm } from "react-hook-form"
 import * as z from "zod"
-
-import { toast } from "../hooks/use-toast"
-import { darkTheme, lightTheme } from "../lib/codeEditorStyles"
-import { VocabularyObjectSchema } from "../lib/validators/vocabularyFormValidator"
-import { Button } from "./ui/Button"
-import { Input } from "./ui/Input"
 
 const VocabularyInput = dynamic(() => import("./VocabularyInput"), {
   ssr: false,

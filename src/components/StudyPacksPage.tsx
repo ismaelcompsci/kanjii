@@ -1,14 +1,13 @@
 "use client"
 
 import { FC, useEffect, useRef } from "react"
+import StudyPackCard from "@/src/components/StudyPackCard"
+import { STUDY_PACK_PAGINATE_NUMBER } from "@/src/config/site"
 import { useIntersection } from "@mantine/hooks"
 import { Like, SeenVocabularyPack, VocabularyPack } from "@prisma/client"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import axios from "axios"
 import { useSession } from "next-auth/react"
-
-import { STUDY_PACK_PAGINATE_NUMBER } from "../config/site"
-import StudyPackCard from "./StudyPackCard"
 
 export interface ExtendedStudyPack extends VocabularyPack {
   creator: {

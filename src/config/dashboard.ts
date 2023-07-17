@@ -1,4 +1,4 @@
-import { DashboardConfig } from "../types"
+import { DashboardConfig } from "@/src/types"
 
 export const dashboardConfig: DashboardConfig = {
   sidebarNav: [

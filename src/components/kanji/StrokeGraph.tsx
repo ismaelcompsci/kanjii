@@ -1,10 +1,9 @@
 "use client"
 
 import { useRef } from "react"
-
-import createStrokeOrderDiagram from "../../hooks/create-stroke-order-diagram"
-import { kanjiURL } from "../../lib/utils"
-import { ScrollArea, ScrollBar } from "../ui/ScrollArea"
+import { ScrollArea, ScrollBar } from "@/src/components/ui/ScrollArea"
+import createStrokeOrderDiagram from "@/src/hooks/create-stroke-order-diagram"
+import { kanjiURL } from "@/src/lib/utils"
 
 interface StrokeGraphProps {
   kanji: string

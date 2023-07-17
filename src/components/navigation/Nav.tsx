@@ -1,11 +1,10 @@
 import Link from "next/link"
-
-import { siteConfig } from "../../config/site"
-import { cn } from "../../lib/utils"
-import { NavItem } from "../../types/nav"
-import { Icons } from "../Icons"
-import { MainNav } from "./MainNav"
-import MobileNav from "./MobileNav"
+import { Icons } from "@/src/components/Icons"
+import { MainNav } from "@/src/components/navigation/MainNav"
+import MobileNav from "@/src/components/navigation/MobileNav"
+import { siteConfig } from "@/src/config/site"
+import { cn } from "@/src/lib/utils"
+import { NavItem } from "@/src/types/nav"
 
 export function Nav() {
   return (

@@ -3,19 +3,18 @@
 import { FC } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { LogOut, Settings } from "lucide-react"
-import { User } from "next-auth"
-import { signOut } from "next-auth/react"
-
-import { Icons } from "./Icons"
-import { UserAvatar } from "./UserAvatar"
+import { Icons } from "@/src/components/Icons"
+import { UserAvatar } from "@/src/components/UserAvatar"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "./ui/DropdownMenu"
+} from "@/src/components/ui/DropdownMenu"
+import { LogOut, Settings } from "lucide-react"
+import { User } from "next-auth"
+import { signOut } from "next-auth/react"
 
 interface UserAccountNavProps {
   user: Pick<User, "name" | "image" | "email">

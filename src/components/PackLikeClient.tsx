@@ -2,15 +2,14 @@
 
 import { FC, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import { ExtendedStudyPack } from "@/src/components/StudyPacksPage"
+import { toast } from "@/src/hooks/use-toast"
+import { cn } from "@/src/lib/utils"
+import { LikingValidatorPayload } from "@/src/lib/validators/LikingValidator"
 import { Like } from "@prisma/client"
 import { useMutation } from "@tanstack/react-query"
 import axios, { AxiosError } from "axios"
 import { Loader2, Star } from "lucide-react"
-
-import { toast } from "../hooks/use-toast"
-import { cn } from "../lib/utils"
-import { LikingValidatorPayload } from "../lib/validators/LikingValidator"
-import { ExtendedStudyPack } from "./StudyPacksPage"
 
 interface PackLikeClientProps {
   currentLike: Like | undefined

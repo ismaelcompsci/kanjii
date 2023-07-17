@@ -1,15 +1,14 @@
 import "./globals.css"
 import { Metadata } from "next"
-
-import { Footer } from "../components/Footer"
-import Providers from "../components/Providers"
-import { TailwindIndicator } from "../components/TailwindIndicator"
-import { ThemeProvider } from "../components/ThemeProvider"
-import { Nav } from "../components/navigation/Nav"
-import { Toaster } from "../components/ui/Toaster"
-import { siteConfig } from "../config/site"
-import { fontSans } from "../lib/fonts"
-import { cn } from "../lib/utils"
+import { Footer } from "@/src/components/Footer"
+import Providers from "@/src/components/Providers"
+import { TailwindIndicator } from "@/src/components/TailwindIndicator"
+import { ThemeProvider } from "@/src/components/ThemeProvider"
+import { Nav } from "@/src/components/navigation/Nav"
+import { Toaster } from "@/src/components/ui/Toaster"
+import { siteConfig } from "@/src/config/site"
+import { fontSans } from "@/src/lib/fonts"
+import { cn } from "@/src/lib/utils"
 
 export const metadata: Metadata = {
   title: {
