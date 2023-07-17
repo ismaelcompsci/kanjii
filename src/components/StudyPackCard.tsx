@@ -34,7 +34,7 @@ const StudyPackCard: FC<StudyPackCardProps> = ({
   pack,
   currentLike,
   seenPack,
-  showButton = true
+  showButton = true,
 }) => {
   const router = useRouter()
 
@@ -60,14 +60,14 @@ const StudyPackCard: FC<StudyPackCardProps> = ({
         </div>
 
         {showButton && (
-        <div className="flex items-center rounded-md text-secondary-foreground">
-          <Button
-            className="px-3"
-            onClick={() => router.push(`/study/${pack.name}`)}
-          >
-            {seenPack ? <span>Continue</span> : <span>Start</span>}
-          </Button>
-        </div>
+          <div className="flex items-center rounded-md text-secondary-foreground">
+            <Button
+              className="px-3"
+              onClick={() => router.push(`/study/${pack.name}`)}
+            >
+              {seenPack ? <span>Continue</span> : <span>Start</span>}
+            </Button>
+          </div>
         )}
       </CardHeader>
       <CardContent>
