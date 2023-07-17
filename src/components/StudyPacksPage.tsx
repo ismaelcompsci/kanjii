@@ -7,6 +7,7 @@ import { useIntersection } from "@mantine/hooks"
 import { Like, SeenVocabularyPack, VocabularyPack } from "@prisma/client"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import axios from "axios"
+import { Loader2 } from "lucide-react"
 import { useSession } from "next-auth/react"
 
 export interface ExtendedStudyPack extends VocabularyPack {
@@ -61,26 +62,51 @@ const StudyPacksFeed: FC<StudyPacksPageProps> = ({
   const packs = data?.pages.flatMap((page) => page) ?? initialPacks
 
   return (
-    <div className="mx-4 mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8">
-      {packs?.map((pack: ExtendedStudyPack) => {
-        const currentLike = pack.likes.find(
-          (like) => like.userId === session?.user.id
-        )
+    <>
+      <div className="mx-4 mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8">
+        {packs?.map((pack: ExtendedStudyPack, index: number) => {
+          const currentLike = pack.likes.find(
+            (like) => like.userId === session?.user.id
+          )
 
-        const seenPack = userSeenPacks?.find(
-          (seenPack) => seenPack.vocabularyPackId === pack.id
-        )
+          const seenPack = userSeenPacks?.find(
+            (seenPack) => seenPack.vocabularyPackId === pack.id
+          )
 
-        return (
-          <StudyPackCard
-            key={pack.id}
-            pack={pack}
-            currentLike={currentLike}
-            seenPack={seenPack}
-          />
-        )
-      })}
-    </div>
+          if (index === packs.length - 1) {
+            return (
+              <div
+                ref={ref}
+                className="col-span-full rounded-lg bg-secondary  lg:col-span-2"
+              >
+                <StudyPackCard
+                  key={pack.id}
+                  pack={pack}
+                  currentLike={currentLike}
+                  seenPack={seenPack}
+                />
+              </div>
+            )
+          } else {
+            return (
+              <div className="col-span-full rounded-lg  bg-secondary lg:col-span-2">
+                <StudyPackCard
+                  key={pack.id}
+                  pack={pack}
+                  currentLike={currentLike}
+                  seenPack={seenPack}
+                />
+              </div>
+            )
+          }
+        })}
+      </div>
+      {isFetchingNextPage && (
+        <div className="mt-8 flex justify-center">
+          <Loader2 className="h-6 w-6 animate-spin text-zinc-500" />
+        </div>
+      )}
+    </>
   )
 }
 

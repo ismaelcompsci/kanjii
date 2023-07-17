@@ -24,5 +24,5 @@ export const siteConfig = {
   },
 }
 
-export const STUDY_PACK_PAGINATE_NUMBER = 10
+export const STUDY_PACK_PAGINATE_NUMBER = 5
 export const VOCABULARY_PAGINATE_NUMBER = 5

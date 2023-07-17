@@ -44,9 +44,9 @@ const Page = async () => {
   }
 
   return (
-    <>
+    <div className="mb-4">
       <StudyPacksFeed initialPacks={studyPacks} userSeenPacks={userSeenPacks} />
-    </>
+    </div>
   )
 }
 
