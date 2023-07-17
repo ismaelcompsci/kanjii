@@ -19,7 +19,7 @@ const MainKanji = ({
   englishSentence,
 }: MainKanjiProps) => {
   return (
-    <div className="container h-screen p-2">
+    <div className="container mt-10 h-full p-2">
       <div className="flex flex-col p-1 md:flex-row">
         <div className="w-auto justify-center whitespace-nowrap text-center text-[100px] hover:font-hira">
           {word}
@@ -66,7 +66,7 @@ const MainKanji = ({
             <DownloadSvgButton text={word} />
           </div>
           {word.split("").map((k, index) => (
-            <div key={index}>
+            <div key={index} id="kanjiSvg">
               <h3>
                 <a href={`https://jisho.org/search/${k}`}>{k}</a>
               </h3>

@@ -24,7 +24,7 @@ const page = async ({ params }: pageProps) => {
   const session = await getAuthSession()
 
   return (
-    <div>
+    <div className="h-full">
       {session ? (
         /* @ts-ignore Server Component */
         <CustomStrokePage pack={pack} />

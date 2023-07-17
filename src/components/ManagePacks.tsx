@@ -12,7 +12,7 @@ import { Button } from "./ui/Button"
 interface ManagePacksProps {
   pack: VocabularyPack
 }
-
+// TODO: ADD TOAST ON SUCCESS
 const ManagePacks: FC<ManagePacksProps> = ({ pack }) => {
   const router = useRouter()
 

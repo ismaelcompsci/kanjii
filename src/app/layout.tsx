@@ -38,9 +38,9 @@ interface RootLayoutProps {
 export default function RootLayout({ children, authModal }: RootLayoutProps) {
   return (
     <>
-      <html lang="en" suppressHydrationWarning>
-        <head />
-        <Providers>
+      <Providers>
+        <html lang="en" suppressHydrationWarning>
+          <head />
           <body
             className={cn(
               "min-h-screen bg-background font-sans antialiased",
@@ -58,8 +58,8 @@ export default function RootLayout({ children, authModal }: RootLayoutProps) {
               <TailwindIndicator />
             </ThemeProvider>
           </body>
-        </Providers>
-      </html>
+        </html>
+      </Providers>
     </>
   )
 }

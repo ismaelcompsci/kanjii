@@ -47,7 +47,7 @@ const CustomStrokePage = async ({ pack }: CustomStrokePageProps) => {
   }
 
   return (
-    <div>
+    <div className="h-full">
       <StrokeInfoPage pack={pack} currentPage={currentPage} />
     </div>
   )

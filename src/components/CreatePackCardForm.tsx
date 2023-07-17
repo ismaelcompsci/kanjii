@@ -13,7 +13,6 @@ import {
   FormMessage,
 } from "@/src/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Vocabulary } from "@prisma/client"
 import axios from "axios"
 import { Loader2 } from "lucide-react"
 import { useTheme } from "next-themes"
