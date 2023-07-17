@@ -7,14 +7,15 @@ import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
 import { Edit, Trash } from "lucide-react"
 
+import { useToast } from "../hooks/use-toast"
 import { Button } from "./ui/Button"
 
 interface ManagePacksProps {
   pack: VocabularyPack
 }
-// TODO: ADD TOAST ON SUCCESS
 const ManagePacks: FC<ManagePacksProps> = ({ pack }) => {
   const router = useRouter()
+  const { toast } = useToast()
 
   const { mutate: deletePack, isLoading } = useMutation({
     mutationFn: async () => {
@@ -25,7 +26,16 @@ const ManagePacks: FC<ManagePacksProps> = ({ pack }) => {
       return data
     },
     onSuccess: () => {
+      toast({
+        title: `Successfully deleted ${pack.name}`,
+      })
       router.refresh()
+    },
+    onError: () => {
+      toast({
+        title: `Failed to delete ${pack.name}`,
+        variant: "destructive",
+      })
     },
   })
 

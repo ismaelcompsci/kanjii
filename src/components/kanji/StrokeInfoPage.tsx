@@ -188,7 +188,6 @@ const StrokeInfoPage: FC<StrokeInfoPageProps> = ({
       return
     }
     const data = updateUserPage()
-    console.log("dtat", data)
     if (currentPage === 1) {
       const payload = {
         packId: pack.id,

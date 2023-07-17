@@ -1,8 +1,6 @@
 import { getAuthSession } from "@/src/lib/auth"
 import { db } from "@/src/lib/db"
-import { VocabularySchema } from "@/src/lib/validators/vocabularyFormValidator"
 
-//  TODO:
 // export async function PATCH(req: Request) {
 //   try {
 //     const session = await getAuthSession()

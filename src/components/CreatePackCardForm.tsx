@@ -80,7 +80,6 @@ const CreatePackCardForm: FC<CreatePackCardFormProps> = ({
       } catch (error: any) {
         const err = JSON.parse(error.message)[0]
 
-        console.log(error)
         toast({
           title: `Error: ${err.code}`,
           description: (

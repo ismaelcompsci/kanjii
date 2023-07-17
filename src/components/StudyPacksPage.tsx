@@ -24,7 +24,6 @@ interface StudyPacksPageProps {
   userSeenPacks: SeenVocabularyPack[] | null
 }
 
-// TODO : fix infinite query
 const StudyPacksFeed: FC<StudyPacksPageProps> = ({
   initialPacks,
   userSeenPacks,

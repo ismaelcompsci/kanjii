@@ -6,7 +6,6 @@ import { getAuthSession } from "@/src/lib/auth"
 interface DashboardLayoutProps {
   children?: React.ReactNode
 }
-// TODO : CHANGE USERNAME ADD UI
 export default async function DashboardLayout({
   children,
 }: DashboardLayoutProps) {
