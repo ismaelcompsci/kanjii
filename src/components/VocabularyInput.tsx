@@ -3,8 +3,16 @@
 import { FC } from "react"
 import Image from "next/image"
 import { Button } from "@/src/components/ui/Button"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/src/components/ui/popover"
 import { json as jsonLang } from "@codemirror/lang-json"
 import CodeMirror from "@uiw/react-codemirror"
+import { Info } from "lucide-react"
+
+import CreatePopup from "./CreatePopup"
 
 interface VocabularyInputProps {
   formatJson: (_: any, spaces?: number) => void
@@ -25,9 +33,12 @@ const VocabularyInput: FC<VocabularyInputProps> = ({
 }) => {
   return (
     <div className="w-full space-y-4">
-      <Button type="button" variant="secondary" onClick={formatJson}>
-        Format
-      </Button>
+      <div className="flex items-center gap-x-4">
+        <Button type="button" variant="secondary" onClick={formatJson}>
+          Format
+        </Button>
+        <CreatePopup />
+      </div>
       <div className="box-border overflow-hidden rounded-md border outline-border">
         <CodeMirror
           value={code}
