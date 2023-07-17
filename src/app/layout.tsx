@@ -10,6 +10,7 @@ import { Toaster } from "@/src/components/ui/Toaster"
 import { siteConfig } from "@/src/config/site"
 import { fontSans } from "@/src/lib/fonts"
 import { cn } from "@/src/lib/utils"
+import { Analytics } from "@vercel/analytics/react"
 
 export const metadata: Metadata = {
   title: {
@@ -51,6 +52,7 @@ export default function RootLayout({ children, authModal }: RootLayoutProps) {
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
               <main>
                 <div className="relative flex min-h-screen flex-col">
+                  <Analytics />
                   <Toaster />
                   <Nav />
                   {authModal}

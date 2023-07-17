@@ -117,6 +117,9 @@ function createStrokeOrderDiagram(
       }
     }
 
+    // TODO : add svg to local storage
+    // check if in storeage else get from url
+
     Snap.load(kanjiSvgUrl, makeStrokeOrderDiagram)
   }, [theme])
 }
