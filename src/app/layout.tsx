@@ -1,5 +1,6 @@
 import "./globals.css"
 import { Metadata } from "next"
+import Head from "next/head"
 import { Footer } from "@/src/components/Footer"
 import Providers from "@/src/components/Providers"
 import { TailwindIndicator } from "@/src/components/TailwindIndicator"
@@ -32,14 +33,15 @@ interface RootLayoutProps {
   authModal: React.ReactNode
 }
 
-// this smells :/
-
 export default function RootLayout({ children, authModal }: RootLayoutProps) {
   return (
     <>
       <Providers>
         <html lang="en" suppressHydrationWarning>
-          <head />
+          <Head>
+            <title>Kanji Stroke order</title>
+            <meta property="og:description"></meta>
+          </Head>
           <body
             className={cn(
               "min-h-screen bg-background font-sans antialiased",
@@ -47,14 +49,16 @@ export default function RootLayout({ children, authModal }: RootLayoutProps) {
             )}
           >
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              <div className="relative flex min-h-screen flex-col">
-                <Toaster />
-                <Nav />
-                {authModal}
-                <div className="flex-1">{children}</div>
-                <Footer className="border-t" />
-              </div>
-              <TailwindIndicator />
+              <main>
+                <div className="relative flex min-h-screen flex-col">
+                  <Toaster />
+                  <Nav />
+                  {authModal}
+                  <div className="flex-1">{children}</div>
+                  <Footer className="border-t" />
+                </div>
+                <TailwindIndicator />
+              </main>
             </ThemeProvider>
           </body>
         </html>

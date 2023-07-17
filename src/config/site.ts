@@ -2,7 +2,8 @@ export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
   name: "StrokeMaster",
-  description: "Practice writing kanji, hiragana or katakana",
+  description:
+    "Practice writing kanji, hiragana or katakana by using our stroke order images",
   mainNav: [
     {
       title: "Home",
